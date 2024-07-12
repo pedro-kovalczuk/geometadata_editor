@@ -9,7 +9,7 @@ const MainContent: React.FC = () => {
         + Adicionar novo
       </Button>
       <Button variant="contained" color="success">
-        Selecionar produto
+        Selecionar produto carto
       </Button>
     </Box>
   );
