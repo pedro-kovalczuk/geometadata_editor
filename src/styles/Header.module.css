@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
+
+.appBar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #F2EBC6;
+  z-index: 1000; /* Ensure the header is above other content */
+}
+
+.toolbar {
+  background-color: #F2EBC6;
+  min-height: 120;
+  display: flex;
+  justify-content: space-between; /* Space between title and avatar sections */
+  align-items: center;           /* Center items vertically */
+  padding: 20px;               /* Optional: Add padding for spacing */
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;     /* Align title and subtitle to the left */
+}
+
+.title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.0rem;
+  color: #546E09;
+}
+
+.subtitle {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
+  color: #546E09;
+  margin-bottom: 20px;
+}
+
+.avatarContainer {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  margin-right: 28px; /* Adds space between text and avatar */
+}
