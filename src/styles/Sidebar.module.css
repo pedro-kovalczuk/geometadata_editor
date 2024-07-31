@@ -1,14 +1,17 @@
 .sidebar {
     width: 240px;
-    margin-top: 26px; /* Adjust the margin as needed */
+    margin-top: 74px; /* Adjust the margin as needed */
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
   }
   
   .listItem {
     background-color: #f5f5f5; /* Light gray background for non-selected items */
     color: #6e6e6e; /* Gray color for text */
-    margin-bottom: 4px; /* Space between items */
-    border-radius: 4px; /* Rounded corners */
-    transition: background-color 0.3s;
+    margin-bottom: 4px; /* Space between items */;
+    border-radius: 10px; /* Rounded corners */
+    transition: background-color 0.1s;
   }
   
   .listItem:hover {

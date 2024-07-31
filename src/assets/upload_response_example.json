@@ -1,0 +1,21 @@
+{
+    "serializer_data": {
+        "metadata_id": "15f8c106-5abe-45b7-93f2-3f3c1db41ba9",
+        "metadata_file": null,
+        "geodata_file": "/media/repository/recorte_wu1NesC.tif",
+        "pdf_file": null
+    },
+    "metadata": {
+        "MD_DataIdentification-extent-geographicElement1-northBoundLatitude": -12.423967891328848,
+        "MD_DataIdentification-extent-geographicElement1-westBoundLongitude": -59.26411824851738,
+        "MD_DataIdentification-extent-geographicElement1-eastBoundLongitude": -59.196372275899606,
+        "MD_DataIdentification-extent-geographicElement1-southBoundLatitude": -12.472711858096217,
+        "MD_DataIdentification-spatialRepresentationType": "Matricial",
+        "MD_ReferenceSystem-referenceSystemIdentifier-code": 5531,
+        "MD_DataIdentification-spatialResolution-equivalentScale-denominator1": 10000,
+        "MD_DataIdentification-spatialResolution-equivalentScale-denominator2": 10000,
+        "MD_Identification-citation-alternateTitle": "1863-4-SO-C",
+        "MD_DataIdentification-spatialResolution-distance": 5,
+        "MD_Metadata-fileIdentifier": "15f8c106-5abe-45b7-93f2-3f3c1db41ba9"
+    }
+}

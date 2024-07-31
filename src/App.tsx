@@ -10,17 +10,25 @@ const App: React.FC = () => {
   const [disabledItems, setDisabledItems] = useState<boolean[]>([false, true, true, true, true, true]);
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "grid", gridTemplateAreas: `"header header" "sidebar main"`, gridTemplateColumns: "auto 1fr", gridTemplateRows: "auto 1fr", height: "100vh" }}>
       <CssBaseline />
-      <Header />
-      <Box component="main" sx={{ display: "flex", mt: 7, width: "100%" }}>
+      <Box sx={{ gridArea: "header" }}>
+        <Header />
+      </Box>
+      <Box sx={{ gridArea: "sidebar"}}>
         <Sidebar
-        selectedItem={selectedItem}
-        setSelectedItem={setSelectedItem}
-        disabledItems={disabledItems}
-        setDisabledItems={setDisabledItems}
-      />
-        <MainContent />
+          selectedItem={selectedItem}
+          setSelectedItem={setSelectedItem}
+          disabledItems={disabledItems}
+          setDisabledItems={setDisabledItems}
+        />
+      </Box>
+      <Box sx={{ gridArea: "main" }}>
+        <MainContent
+          setSelectedItem={setSelectedItem}
+          selectedItem={selectedItem}
+          setDisabledItems={setDisabledItems}
+        />
       </Box>
     </Box>
   );
