@@ -11,10 +11,10 @@ const Header: React.FC = () => {
     <AppBar color="transparent" className={styles.appBar}>
       <Toolbar className={styles.toolbar}>
         <Box className={styles.titleContainer}>
-          <Typography variant="h4" component="div"  className={styles.title} >
+          <Typography variant="h4" component="div"  className={styles.title} sx={{fontFamily: 'Nunito'}}>
             GEOMETADATA
           </Typography>
-          <Typography variant="h6" component="div" className={styles.subtitle}>
+          <Typography variant="h5" component="div" className={styles.subtitle} sx={{fontFamily: 'Nunito', marginLeft:1}}>
              Creator
           </Typography>
         </Box>

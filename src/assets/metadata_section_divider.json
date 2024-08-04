@@ -1,0 +1,97 @@
+[
+    {
+        "id": 1,
+        "name": "Metametadados",
+        "values": [
+            "MD_Metadata-fileIdentifier",
+            "MD_Metadata-contact-individualName",
+            "MD_Metadata-contact-positionName",
+            "MD_Metadata-contact-organisationName",
+            "MD_Metadata-contact-contactInfo-onlineResource-linkage",
+            "MD_Metadata-contact-role",
+            "MD_Metadata-dateStamp",
+            "MD_Metadata-language",
+            "MD_Metadata-characterSet",
+            "MD_Metadata-metadataStandardName",
+            "MD_Metadata-metadataStandardVersion",
+            "MD_Metadata-hierarchyLevel",
+            "MD_Metadata-metadataMaintenance-maintenanceAndUpdateFrequency",
+            "MD_SecurityConstraints-classification-2"
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Identificação do produto",
+        "values": [
+            "collectiveTitle",
+            "MD_Identification-citation-alternateTitle",
+            "MD_Identification-citation-title",
+            "MD_Identification-citation-alternateTitle",
+            "MD_Identification-citation-alternateTitle",
+            "MD_Identification-citation-date-date",
+            "MD_Identification-citation-date-dateType",
+            "MD_Identification-citation-edition",
+            "MD_Identification-citation-editionDate",
+            "MD_Identification-citation-edition-date-dateType",
+            "MD_Identification-citation-series-name",
+            "MD_Identification-abstract",
+            "MD_Identification-purpose",
+            "MD_Identification-credit",
+            "MD_Identification-status",
+            "MD_DataIdentification-spatialResolution-equivalentScale-denominator1",
+            "MD_DataIdentification-spatialResolution-equivalentScale-denominator2",
+            "MD_DataIdentification-language",
+            "MD_DataIdentification-characterSet",
+            "MD_DataIdentification-topicCategory",
+            "MD_DataIdentification-extent-geographicElement1-northBoundLatitude",
+            "MD_DataIdentification-extent-geographicElement1-westBoundLongitude",
+            "MD_DataIdentification-extent-geographicElement1-eastBoundLongitude",
+            "MD_DataIdentification-extent-geographicElement1-southBoundLatitude",
+            "MD_DataIdentification-spatialRepresentationType",
+            "MD_DataIdentification-spatialResolution-distance",
+            "MD_Identification-pointOfContact-organisationName",
+            "MD_Identification-pointOfContact-address-deliveryPoint",
+            "MD_Identification-pointOfContact-phone-voice",
+            "MD_Identification-pointOfContact-contactInfo-onlineResource-linkage",
+            "MD_Identification-pointOfContact-role",
+            "MD_Identification-citation-presentationForm",
+            "MD_LegalConstraints-accessConstraints",
+            "MD_LegalConstraints-useLimitation",
+            "MD_LegalConstraints-useConstraints",
+            "MD_SecurityConstraints-classification",
+            "MD_Identification-resourceSpecificUsage-specificUsage",
+            "MD_Identification-resourceSpecificUsage-userContactInfo-organisationName",
+            "MD_Identification-resourceSpecificUsage-userContactInfo-onlineResource-linkage",
+            "MD_Keywords-keyword",
+            "MD_Keywords-type"
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Características técnicas",
+        "values": [
+            "MD_ReferenceSystem-referenceSystemIdentifier-code",
+            "MD_ReferenceSystem-referenceSystemIdentifier-version",
+            "MD_ReferenceSystem-referenceSystemIdentifier-authority",
+            "MD_DataIdentification-extent-verticalExtent-verticalDatum",
+            "MD_DataIdentification-resourceMaintenance-maintenanceAndUpdateFrequency",
+            "MD_Distribution-distributionFormat-name",
+            "MD_Distribution-distributionFormat-version",
+            "MD_DigitalTransferOptions-transferSize",
+            "MD_DigitalTransferOptions-offLine-name",
+            "MD_DigitalTransferOptions-onLine",
+            "MD_Distributor-distributorContact-organisationName",
+            "MD_Distributor-distributorContact-contactInfo-address-deliveryPoint",
+            "MD_Distributor-distributorContact-contactInfo-phone-voice",
+            "MD_Distributor-distributorContact-role",
+            "MD_StandardOrderProcess-fees"
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Qualidade",
+        "values": [
+            "LI_Lineage-statement"
+        ]
+    }
+]

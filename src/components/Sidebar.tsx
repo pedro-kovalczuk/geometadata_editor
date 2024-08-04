@@ -1,12 +1,8 @@
 import React from "react";
-import CheckIcon from "@mui/icons-material/Check";
-import InfoIcon from "@mui/icons-material/Info";
-import RateReviewIcon from "@mui/icons-material/RateReview";
-import SettingsIcon from "@mui/icons-material/Settings";
+import EditIcon from '@mui/icons-material/Edit';
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import BadgeIcon from "@mui/icons-material/Badge";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -34,11 +30,7 @@ const Sidebar: React.FC<SidebarProps> = ({ selectedItem, setSelectedItem, disabl
 
   const menuItems = [
     { text: "Upload do produto", icon: <UploadFileIcon /> },
-    { text: "Metametadados", icon: <InfoIcon /> },
-    { text: "Identificação", icon: <BadgeIcon /> },
-    { text: "Características técnicas", icon: <SettingsIcon /> },
-    { text: "Qualidade", icon: <RateReviewIcon /> },
-    { text: "Revisar", icon: <CheckIcon /> },
+    { text: "Editar Metadados", icon: <EditIcon /> },
   ];
 
   return (
@@ -55,7 +47,7 @@ const Sidebar: React.FC<SidebarProps> = ({ selectedItem, setSelectedItem, disabl
               <ListItemIcon className={styles.icon}>
                 {item.icon}
               </ListItemIcon>
-              <ListItemText primary={item.text} />
+              <ListItemText primary={item.text} sx={{fontFamily: 'Nunito'}}/>
             </ListItem>
             {index < menuItems.length - 1 && <Divider />} {/* Add Divider between items except after the last one */}
           </React.Fragment>

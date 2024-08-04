@@ -10,7 +10,7 @@ const App: React.FC = () => {
   const [disabledItems, setDisabledItems] = useState<boolean[]>([false, true, true, true, true, true]);
 
   return (
-    <Box sx={{ display: "grid", gridTemplateAreas: `"header header" "sidebar main"`, gridTemplateColumns: "auto 1fr", gridTemplateRows: "auto 1fr", height: "100vh" }}>
+    <Box sx={{ display: "grid", gridTemplateAreas: `"header header" "sidebar main"`, gridTemplateColumns: "auto 1fr", gridTemplateRows: "auto 1fr", height: "100vh"}}>
       <CssBaseline />
       <Box sx={{ gridArea: "header" }}>
         <Header />

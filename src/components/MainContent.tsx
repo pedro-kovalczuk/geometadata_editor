@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
-import UploadComponent from "./UploadComponent";
+import ProductUpload from "./ProductUpload";
+import MetadataEditor from "./MetadataEditor";
+import { MetadataTypeForm } from "../interfaces/app_interfaces";
+
 
 interface MainContentProps {
   setSelectedItem: (item: string) => void;
@@ -9,37 +12,29 @@ interface MainContentProps {
   setDisabledItems: (items: boolean[]) => void;
 }
 
-interface MetadataField {
-  id: number;
-  label: string;
-  iso_xml_path: string;
-  field_type: string;
-  is_static: boolean;
-  possible_values: string;
-  default_value: string;
-  comments: string;
-  old_path: string;
-}
-
-interface Metadata {
-  id: number;
-  name: string;
-  metadata_fields: MetadataField[];
-}
-
 const MainContent: React.FC<MainContentProps> = ({ setSelectedItem, selectedItem, setDisabledItems }) => {
   const [isLoadedProduct, setLoadedProduct] = useState<boolean>(false);
   const [productName, setProductName] = useState<string>("");
 
-  const [metadata, setMetadata] = useState<Metadata | null>(null);
+  const [metadata, setMetadata] = useState<MetadataTypeForm | null>(null);
 
   return (
-    <Box sx={{ flexGrow: 1, p: 10, mt: 4, ml: -3}}>
-      <Typography sx={{mb: 2, fontWeight: 'bold'}}>
-        {isLoadedProduct ? `${productName} ${metadata && metadata.name ? "  /  " + metadata.name : ''}` : 'Nenhum produto carregado'}
+    <Box sx={{ flexGrow: 1, p: 10, mt: 4, ml: -3, pl: 40}}>
+      <Typography sx={{ mb: 5, fontWeight: 'bold', fontFamily: 'Nunito' }}>
+        {isLoadedProduct ? (
+          <>
+            <span style={{ color: 'blue' }}>{productName}</span> {/* Product name in blue */}
+            {metadata && metadata.name && (
+              <>
+                {" / "}
+                <span style={{ color: 'green' }}>{metadata.name}</span> {/* Metadata name in green */}
+              </>
+            )}
+          </>
+        ) : 'Nenhum produto carregado'}
       </Typography>
       { selectedItem === "Upload do produto" &&
-        <UploadComponent 
+        <ProductUpload
         setDisabledItems={setDisabledItems} 
         setProductName={setProductName} 
         isLoadedProduct={isLoadedProduct} 
@@ -48,6 +43,9 @@ const MainContent: React.FC<MainContentProps> = ({ setSelectedItem, selectedItem
         setMetadata={setMetadata}
         setSelectedItem={setSelectedItem}
       />}
+      { selectedItem === "Editar Metadados" &&
+        <MetadataEditor metadata={metadata} setMetadata={setMetadata}/>
+      }
     </Box>
   );
 };
