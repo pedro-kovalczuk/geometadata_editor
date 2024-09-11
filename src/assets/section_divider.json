@@ -1,0 +1,288 @@
+[
+  {
+      "name": "MD_Metadata-fileIdentifier",
+      "section": 1,
+      "subsection": null
+  },
+  {
+      "name": "MD_Metadata-contact-individualName",
+      "section": 1,
+      "subsection": "Contato"
+  },
+  {
+      "name": "MD_Metadata-contact-positionName",
+      "section": 1,
+      "subsection": "Contato"
+  },
+  {
+      "name": "MD_Metadata-contact-organisationName",
+      "section": 1,
+      "subsection": "Contato"
+  },
+  {
+      "name": "MD_Metadata-contact-contactInfo-onlineResource-linkage",
+      "section": 1,
+      "subsection": "Contato"
+  },
+  {
+      "name": "MD_Metadata-contact-role",
+      "section": 1,
+      "subsection": "Contato"
+  },
+  {
+      "name": "MD_Metadata-dateStamp",
+      "section": 1,
+      "subsection": null
+  },
+  {
+      "name": "MD_Metadata-language",
+      "section": 1,
+      "subsection": null
+  },
+  {
+      "name": "MD_Metadata-characterSet",
+      "section": 1,
+      "subsection": null
+  },
+  {
+      "name": "MD_Metadata-metadataStandardName",
+      "section": 1,
+      "subsection": null
+  },
+  {
+      "name": "MD_Metadata-metadataStandardVersion",
+      "section": 1,
+      "subsection": null
+  },
+  {
+      "name": "MD_Metadata-hierarchyLevel",
+      "section": 1,
+      "subsection": null
+  },
+  {
+      "name": "MD_Metadata-metadataMaintenance-maintenanceAndUpdateFrequency",
+      "section": 1,
+      "subsection": null
+  },
+  {
+      "name": "MD_SecurityConstraints-classification-2",
+      "section": 1,
+      "subsection": null
+  },
+  {
+      "name": "collectiveTitle",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-citation-alternateTitle",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-citation-title",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-citation-alternateTitle",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-citation-alternateTitle",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-citation-date-date",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-citation-date-dateType",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-citation-edition",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-citation-editionDate",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-citation-edition-date-dateType",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-citation-series-name",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-abstract",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-purpose",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-credit",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-status",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_DataIdentification-spatialResolution-equivalentScale-denominator1",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_DataIdentification-spatialResolution-equivalentScale-denominator2",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_DataIdentification-language",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_DataIdentification-characterSet",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_DataIdentification-topicCategory",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_DataIdentification-extent-geographicElement1-northBoundLatitude",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_DataIdentification-extent-geographicElement1-westBoundLongitude",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_DataIdentification-extent-geographicElement1-eastBoundLongitude",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_DataIdentification-extent-geographicElement1-southBoundLatitude",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_DataIdentification-spatialRepresentationType",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_DataIdentification-spatialResolution-distance",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-pointOfContact-organisationName",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-pointOfContact-address-deliveryPoint",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-pointOfContact-phone-voice",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-pointOfContact-contactInfo-onlineResource-linkage",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-pointOfContact-role",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-citation-presentationForm",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_LegalConstraints-accessConstraints",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_LegalConstraints-useLimitation",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_LegalConstraints-useConstraints",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_SecurityConstraints-classification",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-resourceSpecificUsage-specificUsage",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-resourceSpecificUsage-userContactInfo-organisationName",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Identification-resourceSpecificUsage-userContactInfo-onlineResource-linkage",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Keywords-keyword",
+      "section": 2,
+      "subsection": null
+  },
+  {
+      "name": "MD_Keywords-type",
+      "section": 2,
+      "subsection": null
+  },
+  {
+    "name": "MD_ReferenceSystem-referenceSystemIdentifier-code",
+    "section": 3,
+    "subsection": null
+  },
+  {
+    "name": "LI_Lineage-statement",
+    "section": 4,
+    "subsection": null
+  }
+]
+  
