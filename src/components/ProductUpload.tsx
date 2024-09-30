@@ -1,5 +1,8 @@
 import AddIcon from "@mui/icons-material/Add";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import DeleteIcon from "@mui/icons-material/Delete";
+import FileCopyIcon from "@mui/icons-material/FileCopy";
 import PanToolAlt from "@mui/icons-material/PanToolAlt";
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -8,33 +11,143 @@ import CircularProgress from "@mui/material/CircularProgress";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import React, { useRef, useState } from "react";
-import { MetadataTypeForm, UploadJSON } from "../interfaces/app_interfaces";
+import { MetadataTypeForm, ProductType, UploadJSON } from "../types/appTypes";
 
+import { uploadProduct } from "../config/axios";
+
+import axios from "axios";
+import { toast } from "react-toastify";
 import product_data from "../assets/product_type_form-response.json";
 import upload_data from "../assets/upload_response_example.json";
+import { Response } from "../types/apiTypes";
+
+// Function to format the file size
+const formatFileSize = (sizeInBytes: number) => {
+  const kb = 1024;
+  const mb = kb * 1024;
+  const gb = mb * 1024;
+
+  if (sizeInBytes >= gb) {
+    return `${(sizeInBytes / gb).toFixed(2)} GB`;
+  } else if (sizeInBytes >= mb) {
+    return `${(sizeInBytes / mb).toFixed(2)} MB`;
+  } else {
+    return `${(sizeInBytes / kb).toFixed(2)} KB`;
+  }
+};
+
+// Define the FileDetails component
+const FileDetails: React.FC<{
+  fileName: string;
+  fileSize: string;
+  onSubmit: () => void;
+  uploadResponse: Response | null; // Add isLoadedProduct prop
+  onDelete: () => void; // Add onDelete function prop
+}> = ({ fileName, fileSize, onSubmit, uploadResponse, onDelete }) => {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        backgroundColor: "#f5f5f5",
+        padding: 2,
+        borderRadius: 1,
+        mt: 2,
+        width: "80%",
+        boxShadow: 1,
+        marginTop: 4,
+      }}
+    >
+      <FileCopyIcon fontSize="medium" sx={{ color: "#4caf50", mr: 2 }} />
+      <Box sx={{ flex: 1 }}>
+        <Typography sx={{ fontFamily: "Nunito" }}>{fileName}</Typography>
+        <Typography sx={{ fontFamily: "Nunito", fontSize: 12, color: "gray" }}>
+          {fileSize}
+        </Typography>
+      </Box>
+
+      <Button
+        variant="outlined"
+        color="error"
+        startIcon={<DeleteIcon />}
+        onClick={onDelete}
+        sx={{ fontFamily: "Nunito", fontWeight: "bold", mr: 3 }}
+      >
+        Excluir
+      </Button>
+
+      {/* Conditionally render the "Enviar" button if isLoadedProduct is false */}
+      {!uploadResponse ? (
+        <Button
+          variant="contained"
+          color="success"
+          onClick={onSubmit}
+          sx={{ fontFamily: "Nunito", fontWeight: "bold" }}
+        >
+          Enviar
+        </Button>
+      ) : (
+        <>
+          {/* Show "Validado" with check icon if the product is loaded */}
+          <CheckCircleIcon fontSize="medium" sx={{ color: "#4caf50", mr: 1 }} />
+          <Typography
+            sx={{
+              fontFamily: "Nunito",
+              fontWeight: "bold",
+              color: "green",
+              mr: 1,
+            }}
+          >
+            Validado
+          </Typography>
+        </>
+      )}
+    </Box>
+  );
+};
 
 interface ProductUploadProps {
   setDisabledItems: (items: boolean[]) => void;
+  productName: string;
   setProductName: (items: string) => void;
   isLoadedProduct: boolean;
   setLoadedProduct: (items: boolean) => void;
   metadata: MetadataTypeForm | null;
   setMetadata: React.Dispatch<React.SetStateAction<MetadataTypeForm | null>>;
   setSelectedItem: (item: string) => void;
+  selectedFile: File | null; // Received from parent
+  setSelectedFile: React.Dispatch<React.SetStateAction<File | null>>; // Setter from parent
+  fileSize: string; // Received from parent
+  setFileSize: React.Dispatch<React.SetStateAction<string>>; // Setter from parent
+  uploadResponse: Response | null;
+  setUploadResponse: React.Dispatch<React.SetStateAction<Response | null>>;
+  availableFormTypes: ProductType | null;
+  setAvailableFormTypes: React.Dispatch<
+    React.SetStateAction<ProductType | null>
+  >;
 }
 
 const ProductUpload: React.FC<ProductUploadProps> = ({
   setDisabledItems,
+  productName,
   setProductName,
   isLoadedProduct,
   setLoadedProduct,
   metadata,
   setMetadata,
   setSelectedItem,
+  selectedFile,
+  setSelectedFile,
+  fileSize,
+  setFileSize,
+  uploadResponse,
+  setUploadResponse,
+  availableFormTypes,
+  setAvailableFormTypes,
 }) => {
   const [productID, setProductID] = useState<number | "">("");
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [loading, setLoading] = useState<boolean>(false); // New loading state
+  const [loading, setLoading] = useState<boolean>(false);
 
   // Use a ref to programmatically click the file input
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -46,23 +159,29 @@ const ProductUpload: React.FC<ProductUploadProps> = ({
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
 
+      // Reset state for a fresh upload process
+      setUploadResponse(null);
+      setLoadedProduct(false);
+
       // Set loading state to true while processing the file
       setLoading(true);
 
-      // Simulate file loading delay or large file processing
       try {
-        // Here you can add any asynchronous logic for processing the file
-        await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulating a delay (2 seconds)
+        // Process the file
         setSelectedFile(file);
-        const productName = file.name;
-        setProductName(productName);
-        setLoadedProduct(true);
+        const selectedProductName = file.name;
+        const fileSizeFormatted = formatFileSize(file.size);
+        setFileSize(fileSizeFormatted); // Set fileSize for the FileDetails component
+        setProductName(selectedProductName);
       } catch (error) {
         console.error("File processing error: ", error);
       } finally {
         // Turn off the loading state once the file is processed
         setLoading(false);
       }
+
+      // Reset the input value so the same file can be selected again
+      event.target.value = "";
     }
   };
 
@@ -103,6 +222,45 @@ const ProductUpload: React.FC<ProductUploadProps> = ({
     }
   };
 
+  // Submit handler function
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+      const response = await uploadProduct(selectedFile);
+      console.log("File submitted successfully:", selectedFile);
+      setUploadResponse(response);
+      setLoadedProduct(true);
+      toast.success("Arquivo validado com sucesso!", {
+        autoClose: 2000,
+      });
+
+      return response;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.code === "ERR_NETWORK") {
+          console.error("Network error: Unable to reach the server");
+          toast.error(
+            "Erro de rede: Por favor, confira sua rede ou tente novamente mais tarde",
+            {
+              autoClose: 4000, // 3 seconds
+            }
+          );
+        } else {
+          console.error("An error occurred:", error.message);
+          toast.error("Este arquivo não é válido", {
+            autoClose: 2000, // 3 seconds
+          });
+        }
+      } else {
+        toast.error("Ocorreu um erro inesperado. Por favor, tente novamente.", {
+          autoClose: 4000, // 3 seconds
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Box sx={{ flexGrow: 1, mt: 4 }}>
       {/* Hidden file input field */}
@@ -140,12 +298,31 @@ const ProductUpload: React.FC<ProductUploadProps> = ({
             Selecionar produto
           </Button>
 
+          {/* Render FileDetails component only if a file is selected */}
+          {selectedFile && (
+            <FileDetails
+              fileName={productName}
+              fileSize={fileSize} // Pass the file size prop
+              onSubmit={handleSubmit}
+              uploadResponse={uploadResponse} // Pass isLoadedProduct prop
+              onDelete={() => {
+                // Add delete logic here, e.g., resetting the file input
+                setSelectedFile(null);
+                setProductName("");
+                setFileSize("");
+                setLoadedProduct(false);
+                setUploadResponse(null);
+              }} // Add delete logic here
+            />
+          )}
+
           {isLoadedProduct && (
-            <Box sx={{ mt: 4, width: 500, mb: 6 }}>
+            <Box sx={{ mt: 4, width: 600, mb: 6 }}>
               <Typography
                 style={{ marginBottom: 5, marginLeft: 5, fontFamily: "Nunito" }}
               >
-                Selecione o tipo do produto carregado acima (Obrigatório)
+                Selecione o tipo de formulário para o produto carregado acima
+                (Obrigatório)
               </Typography>
               <Select
                 value={productID}

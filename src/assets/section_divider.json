@@ -77,32 +77,32 @@
   {
       "name": "MD_Identification-citation-alternateTitle",
       "section": 2,
-      "subsection": null
+      "subsection": "Nomenclatura"
   },
   {
       "name": "MD_Identification-citation-title",
       "section": 2,
-      "subsection": null
+      "subsection": "Nomenclatura"
   },
   {
       "name": "MD_Identification-citation-alternateTitle",
       "section": 2,
-      "subsection": null
+      "subsection": "Nomenclatura"
   },
   {
       "name": "MD_Identification-citation-alternateTitle",
       "section": 2,
-      "subsection": null
+      "subsection": "Nomenclatura"
   },
   {
       "name": "MD_Identification-citation-date-date",
       "section": 2,
-      "subsection": null
+      "subsection": "Datas"
   },
   {
       "name": "MD_Identification-citation-date-dateType",
       "section": 2,
-      "subsection": null
+      "subsection": "Datas"
   },
   {
       "name": "MD_Identification-citation-edition",
@@ -147,12 +147,12 @@
   {
       "name": "MD_DataIdentification-spatialResolution-equivalentScale-denominator1",
       "section": 2,
-      "subsection": null
+      "subsection": "Resolução espacial"
   },
   {
       "name": "MD_DataIdentification-spatialResolution-equivalentScale-denominator2",
       "section": 2,
-      "subsection": null
+      "subsection": "Resolução espacial"
   },
   {
       "name": "MD_DataIdentification-language",
@@ -275,14 +275,84 @@
       "subsection": null
   },
   {
-    "name": "MD_ReferenceSystem-referenceSystemIdentifier-code",
-    "section": 3,
-    "subsection": null
-  },
+			"name": "MD_ReferenceSystem-referenceSystemIdentifier-code",
+			"section": 3,
+			"subsection": null
+	},
+	{
+			"name": "MD_ReferenceSystem-referenceSystemIdentifier-version",
+			"section": 3,
+			"subsection": null
+	},
+	{
+			"name": "MD_ReferenceSystem-referenceSystemIdentifier-authority",
+			"section": 3,
+			"subsection": null
+	},
+	{
+			"name": "MD_DataIdentification-extent-verticalExtent-verticalDatum",
+			"section": 3,
+			"subsection": null
+	},
+	{
+			"name": "MD_DataIdentification-resourceMaintenance-maintenanceAndUpdateFrequency",
+			"section": 3,
+			"subsection": null
+	},
+	{
+			"name": "MD_Distribution-distributionFormat-name",
+			"section": 3,
+			"subsection": null
+	},
+	{
+			"name": "MD_Distribution-distributionFormat-version",
+			"section": 3,
+			"subsection": null
+	},
+	{
+			"name": "MD_DigitalTransferOptions-transferSize",
+			"section": 3,
+			"subsection": null
+	},
+	{
+			"name": "MD_DigitalTransferOptions-offLine-name",
+			"section": 3,
+			"subsection": null
+	},
+	{
+			"name": "MD_DigitalTransferOptions-onLine",
+			"section": 3,
+			"subsection": null
+	},
+	{
+			"name": "MD_Distributor-distributorContact-organisationName",
+			"section": 3,
+			"subsection": null
+	},
+	{
+			"name": "MD_Distributor-distributorContact-contactInfo-address-deliveryPoint",
+			"section": 3,
+			"subsection": null
+	},
+	{
+			"name": "MD_Distributor-distributorContact-contactInfo-phone-voice",
+			"section": 3,
+			"subsection": null
+	},
+	{
+			"name": "MD_Distributor-distributorContact-role",
+			"section": 3,
+			"subsection": null
+	},
+	{
+			"name": "MD_StandardOrderProcess-fees",
+			"section": 3,
+			"subsection": null
+	},
   {
-    "name": "LI_Lineage-statement",
-    "section": 4,
-    "subsection": null
+			"name": "LI_Lineage-statement",
+			"section": 4,
+			"subsection": null
   }
 ]
   

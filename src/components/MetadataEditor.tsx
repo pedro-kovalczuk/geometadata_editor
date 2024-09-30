@@ -1,18 +1,30 @@
-import React from 'react';
-import { Box, Grid, TextField, MenuItem, Select, FormControl, InputLabel, Typography, Divider } from '@mui/material';
-import { MetadataTypeForm, MetadataField } from '../interfaces/app_interfaces';
-import metadataGroups from '../assets/metadata_section_divider.json';
+import {
+  Box,
+  Divider,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
+import React from "react";
+import metadataGroups from "../assets/metadata_section_divider.json";
+import { MetadataField, MetadataTypeForm } from "../types/appTypes";
 
 interface MetametadataComponentProps {
   metadata: MetadataTypeForm | null;
   setMetadata: (metadata: MetadataTypeForm | null) => void;
 }
 
-const MetadataEditor: React.FC<MetametadataComponentProps> = ({ metadata, setMetadata }) => {
-  
+const MetadataEditor: React.FC<MetametadataComponentProps> = ({
+  metadata,
+  setMetadata,
+}) => {
   const handleFieldChange = (id: number, value: string) => {
     if (metadata) {
-      const updatedFields = metadata.metadata_fields.map(field => 
+      const updatedFields = metadata.metadata_fields.map((field) =>
         field.id === id ? { ...field, default_value: value } : field
       );
       setMetadata({ ...metadata, metadata_fields: updatedFields });
@@ -20,21 +32,40 @@ const MetadataEditor: React.FC<MetametadataComponentProps> = ({ metadata, setMet
   };
 
   const getDropdownValue = (field: MetadataField): string => {
-    const possibleValues = field.possible_values.split(',').map((option: string) => option.trim());
-    return possibleValues.includes(field.default_value.trim()) ? field.default_value.trim() : '';
+    const possibleValues = field.possible_values
+      .split(",")
+      .map((option: string) => option.trim());
+    return possibleValues.includes(field.default_value.trim())
+      ? field.default_value.trim()
+      : "";
   };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       {metadataGroups.map((group) => (
         <Box key={group.id} sx={{ mb: 4 }}>
-          <Divider sx={{ borderWidth: 1, borderColor: 'green', mb: 2, mt: group.name === "Metametadados" ? 2 : 8 }} />
-          <Typography variant="h5" sx={{ mb: 4, fontFamily: 'Nunito', color: "green", fontWeight: 'bold'}}>
+          <Divider
+            sx={{
+              borderWidth: 1,
+              borderColor: "green",
+              mb: 2,
+              mt: group.name === "Metametadados" ? 2 : 8,
+            }}
+          />
+          <Typography
+            variant="h5"
+            sx={{
+              mb: 4,
+              fontFamily: "Nunito",
+              color: "green",
+              fontWeight: "bold",
+            }}
+          >
             {group.name}
           </Typography>
           <Grid container spacing={2}>
             {metadata?.metadata_fields
-              .filter(field => group.values.includes(field.iso_xml_path))
+              .filter((field) => group.values.includes(field.iso_xml_path))
               .map((field) => (
                 <Grid item xs={12} sm={4} key={field.id}>
                   {field.possible_values ? (
@@ -43,14 +74,16 @@ const MetadataEditor: React.FC<MetametadataComponentProps> = ({ metadata, setMet
                       variant="outlined"
                       disabled={field.is_static}
                       sx={{
-                        backgroundColor: field.default_value ? 'grey.200' : 'inherit',
+                        backgroundColor: field.default_value
+                          ? "grey.200"
+                          : "inherit",
                       }}
                     >
                       <InputLabel
                         sx={{
-                          fontFamily: 'Nunito',
-                          '&.Mui-focused': {
-                            color: 'green',
+                          fontFamily: "Nunito",
+                          "&.Mui-focused": {
+                            color: "green",
                           },
                         }}
                       >
@@ -58,63 +91,73 @@ const MetadataEditor: React.FC<MetametadataComponentProps> = ({ metadata, setMet
                       </InputLabel>
                       <Select
                         value={getDropdownValue(field)}
-                        onChange={(e) => handleFieldChange(field.id, e.target.value as string)}
+                        onChange={(e) =>
+                          handleFieldChange(field.id, e.target.value as string)
+                        }
                         label={field.label}
                         sx={{
-                          fontFamily: 'Nunito',
-                          '& .MuiOutlinedInput-root': {
-                            '& fieldset': {
-                              borderColor: 'grey',
+                          fontFamily: "Nunito",
+                          "& .MuiOutlinedInput-root": {
+                            "& fieldset": {
+                              borderColor: "grey",
                             },
-                            '&:hover fieldset': {
-                              borderColor: 'grey',
+                            "&:hover fieldset": {
+                              borderColor: "grey",
                             },
-                            '&.Mui-focused fieldset': {
-                              borderColor: 'green',
+                            "&.Mui-focused fieldset": {
+                              borderColor: "green",
                             },
                           },
                         }}
                       >
-                        {field.possible_values.split(',').map((option: string) => (
-                          <MenuItem key={option.trim()} value={option.trim()}>
-                            {option.trim()}
-                          </MenuItem>
-                        ))}
+                        {field.possible_values
+                          .split(",")
+                          .map((option: string) => (
+                            <MenuItem key={option.trim()} value={option.trim()}>
+                              {option.trim()}
+                            </MenuItem>
+                          ))}
                       </Select>
                     </FormControl>
-                  ) : field.field_type === 'string' || field.field_type === 'int' || field.field_type === 'float' ? (
+                  ) : field.field_type === "string" ||
+                    field.field_type === "int" ||
+                    field.field_type === "float" ? (
                     <TextField
                       label={field.label}
                       variant="outlined"
                       fullWidth
                       value={field.default_value}
-                      onChange={(e) => handleFieldChange(field.id, e.target.value)}
+                      onChange={(e) =>
+                        handleFieldChange(field.id, e.target.value)
+                      }
                       disabled={field.is_static}
                       InputLabelProps={{
                         sx: {
-                          fontFamily: 'Nunito',
-                          '&.Mui-focused': {
-                            color: 'green',
+                          fontFamily: "Nunito",
+                          "&.Mui-focused": {
+                            color: "green",
                           },
                         },
                       }}
                       sx={{
-                        backgroundColor: field.default_value ? 'grey.200' : 'inherit',
-                        fontFamily: 'Nunito',
-                        '& .MuiOutlinedInput-root': {
-                          '& fieldset': {
-                            borderColor: 'grey',
+                        backgroundColor: field.default_value
+                          ? "grey.200"
+                          : "inherit",
+                        fontFamily: "Nunito",
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "grey",
                           },
-                          '&:hover fieldset': {
-                            borderColor: 'grey',
+                          "&:hover fieldset": {
+                            borderColor: "grey",
                           },
-                          '&.Mui-focused fieldset': {
-                            borderColor: 'green',
+                          "&.Mui-focused fieldset": {
+                            borderColor: "green",
                           },
                         },
                       }}
                     />
-                  ) : field.field_type === 'date' ? (
+                  ) : field.field_type === "date" ? (
                     <TextField
                       label={field.label}
                       type="date"
@@ -123,27 +166,31 @@ const MetadataEditor: React.FC<MetametadataComponentProps> = ({ metadata, setMet
                       InputLabelProps={{
                         shrink: true,
                         sx: {
-                          fontFamily: 'Nunito',
-                          '&.Mui-focused': {
-                            color: 'green',
+                          fontFamily: "Nunito",
+                          "&.Mui-focused": {
+                            color: "green",
                           },
                         },
                       }}
                       value={field.default_value}
-                      onChange={(e) => handleFieldChange(field.id, e.target.value)}
+                      onChange={(e) =>
+                        handleFieldChange(field.id, e.target.value)
+                      }
                       disabled={field.is_static}
                       sx={{
-                        fontFamily: 'Nunito',
-                        backgroundColor: field.default_value ? 'grey.200' : 'inherit',
-                        '& .MuiOutlinedInput-root': {
-                          '& fieldset': {
-                            borderColor: 'grey',
+                        fontFamily: "Nunito",
+                        backgroundColor: field.default_value
+                          ? "grey.200"
+                          : "inherit",
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "grey",
                           },
-                          '&:hover fieldset': {
-                            borderColor: 'grey',
+                          "&:hover fieldset": {
+                            borderColor: "grey",
                           },
-                          '&.Mui-focused fieldset': {
-                            borderColor: 'green',
+                          "&.Mui-focused fieldset": {
+                            borderColor: "green",
                           },
                         },
                       }}
