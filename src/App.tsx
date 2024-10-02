@@ -9,14 +9,8 @@ import Sidebar from "./components/Sidebar";
 
 const App: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<string>("Upload do produto");
-  const [disabledItems, setDisabledItems] = useState<boolean[]>([
-    false,
-    true,
-    true,
-    true,
-    true,
-    true,
-  ]);
+  const [disabledItems, setDisabledItems] = useState<boolean[]>([false, true]);
+  const [darkMode, setDarkMode] = useState<boolean>(false);
 
   return (
     <>
@@ -31,7 +25,7 @@ const App: React.FC = () => {
       >
         <CssBaseline />
         <Box sx={{ gridArea: "header" }}>
-          <Header />
+          <Header darkMode={darkMode} setDarkMode={setDarkMode} />
         </Box>
         <Box sx={{ gridArea: "sidebar" }}>
           <Sidebar

@@ -1,14 +1,17 @@
 import axios, { AxiosResponse } from "axios";
-import { Response } from "../types/apiTypes"; // Import the UploadResponse type
+import { UploadResponse } from "../types/apiTypes"; // Import the UploadResponse type
+import { MetadataTypeForm } from "../types/appTypes";
 
-export const uploadProduct = async (file: File | null): Promise<Response> => {
+export const postGeoproduct = async (
+  file: File | null
+): Promise<UploadResponse> => {
   const formData = new FormData();
   if (file) {
     formData.append("geodata_file", file); // Append the file object
   }
 
   try {
-    const response: AxiosResponse<Response> = await axios.post(
+    const response: AxiosResponse<UploadResponse> = await axios.post(
       "http://localhost:8000/geoproduct/",
       formData,
       {
@@ -23,5 +26,23 @@ export const uploadProduct = async (file: File | null): Promise<Response> => {
   } catch (error) {
     console.error("Error uploading file:", error);
     throw error; // Throw the error to be caught in the calling function
+  }
+};
+
+export const getFormType = async (
+  id: number | ""
+): Promise<MetadataTypeForm | null> => {
+  if (!id) {
+    return null; // Handle case where id is empty
+  }
+
+  try {
+    const response: AxiosResponse<MetadataTypeForm> = await axios.get(
+      `http://localhost:8000/product_types/${id}/`
+    );
+    return response.data; // Return the form data
+  } catch (error) {
+    console.error("Error fetching form data:", error);
+    return null; // Return null in case of error
   }
 };

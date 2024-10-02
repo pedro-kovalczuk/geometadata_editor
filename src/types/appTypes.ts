@@ -13,6 +13,7 @@ interface MetadataField {
 interface MetadataTypeForm {
   id: number;
   name: string;
+  xml_template: any;
   metadata_fields: MetadataField[];
 }
 
@@ -28,21 +29,4 @@ interface UploadJSON {
   metadata: Record<string, any>;
 }
 
-interface ProductType {
-  id: number;
-  name: string;
-}
-
-interface UploadResponse {
-  file_fields: { [key: string]: any }; // Dynamic object structure
-  file_id: number;
-  product_types: ProductType[];
-}
-
-export type {
-  MetadataField,
-  MetadataTypeForm,
-  ProductType,
-  UploadJSON,
-  UploadResponse,
-};
+export type { MetadataField, MetadataTypeForm, UploadJSON };

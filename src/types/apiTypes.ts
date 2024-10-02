@@ -1,7 +1,7 @@
-interface Response {
+interface Response<T = any> {
   success: boolean;
   message: string;
-  data?: any; // Replace with actual type if known
+  data?: T;
 }
 
 interface Error {
@@ -9,4 +9,15 @@ interface Error {
   code?: string;
 }
 
-export type { Error, Response };
+interface ProductType {
+  id: number;
+  name: string;
+}
+
+interface UploadResponse {
+  file_fields: Record<string, any>; // Use Record to define dynamic object structure
+  file_id: number;
+  product_types: ProductType[];
+}
+
+export type { Error, ProductType, Response, UploadResponse };
