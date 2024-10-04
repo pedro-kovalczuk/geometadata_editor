@@ -29,4 +29,23 @@ interface UploadJSON {
   metadata: Record<string, any>;
 }
 
-export type { MetadataField, MetadataTypeForm, UploadJSON };
+interface ProductState {
+  isLoadedProduct: boolean;
+  productName: string;
+  selectedFile: File | null;
+  fileSize: string;
+}
+
+// Define the props type if passing this state as props
+interface ProductProps {
+  state: ProductState;
+  setState: React.Dispatch<React.SetStateAction<ProductState>>;
+}
+
+export type {
+  MetadataField,
+  MetadataTypeForm,
+  ProductProps,
+  ProductState,
+  UploadJSON,
+};

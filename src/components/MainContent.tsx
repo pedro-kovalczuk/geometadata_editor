@@ -1,8 +1,8 @@
 import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import React, { useState } from "react";
-import { ProductType, UploadResponse } from "../types/apiTypes";
-import { MetadataTypeForm } from "../types/appTypes";
+import { APIResponse, ProductType, UploadResponse } from "../types/apiTypes";
+import { MetadataTypeForm, ProductState } from "../types/appTypes";
 import MetadataEditor from "./MetadataEditor";
 import ProductUpload from "./ProductUpload";
 
@@ -20,21 +20,28 @@ const MainContent: React.FC<MainContentProps> = ({
   const [isLoadedProduct, setLoadedProduct] = useState<boolean>(false);
   const [productName, setProductName] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedXML, setSelectedXML] = useState<ProductState>({
+    isLoadedProduct: false,
+    productName: "",
+    selectedFile: null,
+    fileSize: "",
+  });
   const [selectedFormID, setSelectedFormID] = useState<number | "">("");
   const [fileSize, setFileSize] = useState<string>("");
   const [availableFormTypes, setAvailableFormTypes] = useState<
     ProductType[] | null
   >(null);
   const [metadata, setMetadata] = useState<MetadataTypeForm | null>(null);
-  const [uploadResponse, setUploadResponse] = useState<UploadResponse | null>(
-    null
-  );
+  const [productUploadResponse, setUploadResponse] =
+    useState<UploadResponse | null>(null);
+  const [xmlUploadResponse, setXMLUploadResponse] =
+    useState<APIResponse | null>(null);
 
-  console.log(uploadResponse?.file_fields);
+  console.log(xmlUploadResponse);
 
   return (
     <Box sx={{ flexGrow: 1, p: 10, mt: 4, ml: -3, pl: 40 }}>
-      <Typography sx={{ mb: 5, fontWeight: "bold", fontFamily: "Nunito" }}>
+      <Typography sx={{ mb: 1, fontWeight: "bold", fontFamily: "Nunito" }}>
         {isLoadedProduct ? (
           <>
             <span style={{ color: "blue" }}>{productName}</span>
@@ -65,10 +72,14 @@ const MainContent: React.FC<MainContentProps> = ({
           setSelectedFormID={setSelectedFormID}
           fileSize={fileSize}
           setFileSize={setFileSize}
-          uploadResponse={uploadResponse}
+          productUploadResponse={productUploadResponse}
           setUploadResponse={setUploadResponse}
           availableFormTypes={availableFormTypes}
           setAvailableFormTypes={setAvailableFormTypes}
+          selectedXML={selectedXML}
+          setSelectedXML={setSelectedXML}
+          xmlUploadResponse={xmlUploadResponse}
+          setXMLUploadResponse={setXMLUploadResponse}
         />
       )}
       {selectedItem === "Editar Metadados" && (

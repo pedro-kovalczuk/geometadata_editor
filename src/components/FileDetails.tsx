@@ -2,15 +2,23 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
 import { Box, Button, Typography } from "@mui/material";
-import { UploadResponse } from "../types/apiTypes";
+import { APIResponse, UploadResponse } from "../types/apiTypes";
 
 const FileDetails: React.FC<{
   fileName: string;
   fileSize: string;
   onSubmit: () => void;
-  uploadResponse: UploadResponse | null;
+  uploadResponse: UploadResponse | APIResponse | null;
   onDelete: () => void;
-}> = ({ fileName, fileSize, onSubmit, uploadResponse, onDelete }) => {
+  statusMessage: string;
+}> = ({
+  fileName,
+  fileSize,
+  onSubmit,
+  uploadResponse,
+  onDelete,
+  statusMessage,
+}) => {
   return (
     <Box
       sx={{
@@ -23,7 +31,7 @@ const FileDetails: React.FC<{
         mt: 2,
         width: "80%",
         boxShadow: 1,
-        marginTop: 5,
+        marginTop: 3,
       }}
     >
       <FileCopyIcon fontSize="medium" sx={{ color: "#4caf50", mr: 2 }} />
@@ -65,7 +73,7 @@ const FileDetails: React.FC<{
               mr: 1,
             }}
           >
-            Validado
+            {statusMessage}
           </Typography>
         </>
       )}
