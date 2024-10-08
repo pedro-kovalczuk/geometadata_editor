@@ -36,12 +36,13 @@ const MainContent: React.FC<MainContentProps> = ({
     useState<UploadResponse | null>(null);
   const [xmlUploadResponse, setXMLUploadResponse] =
     useState<APIResponse | null>(null);
+  const [cadastroGeralData, setCadastroGeralData] = useState<APIResponse[]>([]);
 
-  console.log(xmlUploadResponse);
+  console.log(metadata);
 
   return (
     <Box sx={{ flexGrow: 1, p: 10, mt: 4, ml: -3, pl: 40 }}>
-      <Typography sx={{ mb: 1, fontWeight: "bold", fontFamily: "Nunito" }}>
+      <Typography sx={{ mb: 4, fontWeight: "bold", fontFamily: "Nunito" }}>
         {isLoadedProduct ? (
           <>
             <span style={{ color: "blue" }}>{productName}</span>
@@ -80,6 +81,8 @@ const MainContent: React.FC<MainContentProps> = ({
           setSelectedXML={setSelectedXML}
           xmlUploadResponse={xmlUploadResponse}
           setXMLUploadResponse={setXMLUploadResponse}
+          cadastroGeralData={cadastroGeralData}
+          setCadastroGeralData={setCadastroGeralData}
         />
       )}
       {selectedItem === "Editar Metadados" && (

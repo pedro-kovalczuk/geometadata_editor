@@ -70,12 +70,12 @@
       "subsection": null
   },
   {
-      "name": "collectiveTitle",
+      "name": "MD_Identification-citation-collectiveTitle",
       "section": 2,
       "subsection": null
   },
   {
-      "name": "MD_Identification-citation-alternateTitle",
+      "name": "MD_Identification-citation-alternateTitle1",
       "section": 2,
       "subsection": "Nomenclatura"
   },
@@ -85,12 +85,12 @@
       "subsection": "Nomenclatura"
   },
   {
-      "name": "MD_Identification-citation-alternateTitle",
+      "name": "MD_Identification-citation-alternateTitle2",
       "section": 2,
       "subsection": "Nomenclatura"
   },
   {
-      "name": "MD_Identification-citation-alternateTitle",
+      "name": "MD_Identification-citation-alternateTitle3",
       "section": 2,
       "subsection": "Nomenclatura"
   },
@@ -172,57 +172,57 @@
   {
       "name": "MD_DataIdentification-extent-geographicElement1-northBoundLatitude",
       "section": 2,
-      "subsection": null
+      "subsection": "Extensões"
   },
   {
       "name": "MD_DataIdentification-extent-geographicElement1-westBoundLongitude",
       "section": 2,
-      "subsection": null
+      "subsection": "Extensões"
   },
   {
       "name": "MD_DataIdentification-extent-geographicElement1-eastBoundLongitude",
       "section": 2,
-      "subsection": null
+      "subsection": "Extensões"
   },
   {
       "name": "MD_DataIdentification-extent-geographicElement1-southBoundLatitude",
       "section": 2,
-      "subsection": null
+      "subsection": "Extensões"
   },
   {
       "name": "MD_DataIdentification-spatialRepresentationType",
       "section": 2,
-      "subsection": null
+      "subsection": "Extensões"
   },
   {
       "name": "MD_DataIdentification-spatialResolution-distance",
       "section": 2,
-      "subsection": null
+      "subsection": "Extensões"
   },
   {
       "name": "MD_Identification-pointOfContact-organisationName",
       "section": 2,
-      "subsection": null
+      "subsection": "Pontos de Contato"
   },
   {
       "name": "MD_Identification-pointOfContact-address-deliveryPoint",
       "section": 2,
-      "subsection": null
+      "subsection": "Pontos de Contato"
   },
   {
       "name": "MD_Identification-pointOfContact-phone-voice",
       "section": 2,
-      "subsection": null
+      "subsection": "Pontos de Contato"
   },
   {
       "name": "MD_Identification-pointOfContact-contactInfo-onlineResource-linkage",
       "section": 2,
-      "subsection": null
+      "subsection": "Pontos de Contato"
   },
   {
       "name": "MD_Identification-pointOfContact-role",
       "section": 2,
-      "subsection": null
+      "subsection": "Pontos de Contato"
   },
   {
       "name": "MD_Identification-citation-presentationForm",
@@ -232,122 +232,122 @@
   {
       "name": "MD_LegalConstraints-accessConstraints",
       "section": 2,
-      "subsection": null
+      "subsection": "Restrições"
   },
   {
       "name": "MD_LegalConstraints-useLimitation",
       "section": 2,
-      "subsection": null
+      "subsection": "Restrições"
   },
   {
       "name": "MD_LegalConstraints-useConstraints",
       "section": 2,
-      "subsection": null
+      "subsection": "Restrições"
   },
   {
       "name": "MD_SecurityConstraints-classification",
       "section": 2,
-      "subsection": null
+      "subsection": "Restrições"
   },
   {
       "name": "MD_Identification-resourceSpecificUsage-specificUsage",
       "section": 2,
-      "subsection": null
+      "subsection": "Uso"
   },
   {
       "name": "MD_Identification-resourceSpecificUsage-userContactInfo-organisationName",
       "section": 2,
-      "subsection": null
+      "subsection": "Uso"
   },
   {
       "name": "MD_Identification-resourceSpecificUsage-userContactInfo-onlineResource-linkage",
       "section": 2,
-      "subsection": null
+      "subsection": "Uso"
   },
   {
       "name": "MD_Keywords-keyword",
       "section": 2,
-      "subsection": null
+      "subsection": "Palavras-chave"
   },
   {
       "name": "MD_Keywords-type",
       "section": 2,
-      "subsection": null
+      "subsection": "Palavras-chave"
   },
   {
 			"name": "MD_ReferenceSystem-referenceSystemIdentifier-code",
 			"section": 3,
-			"subsection": null
+			"subsection": "Sistema de referência planimétrico"
 	},
 	{
 			"name": "MD_ReferenceSystem-referenceSystemIdentifier-version",
 			"section": 3,
-			"subsection": null
+			"subsection": "Sistema de referência planimétrico"
 	},
 	{
 			"name": "MD_ReferenceSystem-referenceSystemIdentifier-authority",
 			"section": 3,
-			"subsection": null
+			"subsection": "Sistema de referência planimétrico"
 	},
 	{
 			"name": "MD_DataIdentification-extent-verticalExtent-verticalDatum",
 			"section": 3,
-			"subsection": null
+			"subsection": "Sistema de referência altimétrico"
 	},
 	{
 			"name": "MD_DataIdentification-resourceMaintenance-maintenanceAndUpdateFrequency",
 			"section": 3,
-			"subsection": null
+			"subsection": "Manutenção do produto"
 	},
 	{
 			"name": "MD_Distribution-distributionFormat-name",
 			"section": 3,
-			"subsection": null
+			"subsection": "Distribuição do produto"
 	},
 	{
 			"name": "MD_Distribution-distributionFormat-version",
 			"section": 3,
-			"subsection": null
+			"subsection": "Distribuição do produto"
 	},
 	{
 			"name": "MD_DigitalTransferOptions-transferSize",
 			"section": 3,
-			"subsection": null
+			"subsection": "Distribuição do produto"
 	},
 	{
 			"name": "MD_DigitalTransferOptions-offLine-name",
 			"section": 3,
-			"subsection": null
+			"subsection": "Distribuição do produto"
 	},
 	{
 			"name": "MD_DigitalTransferOptions-onLine",
 			"section": 3,
-			"subsection": null
-	},
-	{
-			"name": "MD_Distributor-distributorContact-organisationName",
-			"section": 3,
-			"subsection": null
-	},
-	{
-			"name": "MD_Distributor-distributorContact-contactInfo-address-deliveryPoint",
-			"section": 3,
-			"subsection": null
-	},
-	{
-			"name": "MD_Distributor-distributorContact-contactInfo-phone-voice",
-			"section": 3,
-			"subsection": null
-	},
-	{
-			"name": "MD_Distributor-distributorContact-role",
-			"section": 3,
-			"subsection": null
+			"subsection": "Distribuição do produto"
 	},
 	{
 			"name": "MD_StandardOrderProcess-fees",
 			"section": 3,
-			"subsection": null
+			"subsection": "Distribuição do produto"
+	},
+	{
+			"name": "MD_Distributor-distributorContact-organisationName",
+			"section": 3,
+			"subsection": "Informação da Organização Distribuidora"
+	},
+	{
+			"name": "MD_Distributor-distributorContact-contactInfo-address-deliveryPoint",
+			"section": 3,
+			"subsection": "Informação da Organização Distribuidora"
+	},
+	{
+			"name": "MD_Distributor-distributorContact-contactInfo-phone-voice",
+			"section": 3,
+			"subsection": "Informação da Organização Distribuidora"
+	},
+	{
+			"name": "MD_Distributor-distributorContact-role",
+			"section": 3,
+			"subsection": "Informação da Organização Distribuidora"
 	},
   {
 			"name": "LI_Lineage-statement",

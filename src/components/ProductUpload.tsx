@@ -1,5 +1,5 @@
 import AddIcon from "@mui/icons-material/Add";
-import { Typography } from "@mui/material";
+import { Divider, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -8,7 +8,12 @@ import Select from "@mui/material/Select";
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { getFormType, postGeoproduct, postXMLData } from "../config/axios";
+import {
+  getFormType,
+  getFromCadastroGeral,
+  postGeoproduct,
+  postXMLData,
+} from "../config/axios";
 import { APIResponse, ProductType, UploadResponse } from "../types/apiTypes";
 import { MetadataTypeForm, ProductState } from "../types/appTypes";
 import { formatFileSize } from "../utils/formatFileSize";
@@ -45,6 +50,8 @@ interface ProductUploadProps {
   setXMLUploadResponse: React.Dispatch<
     React.SetStateAction<APIResponse | null>
   >;
+  cadastroGeralData: APIResponse[];
+  setCadastroGeralData: React.Dispatch<React.SetStateAction<APIResponse[]>>;
 }
 
 const ProductUpload: React.FC<ProductUploadProps> = ({
@@ -70,6 +77,8 @@ const ProductUpload: React.FC<ProductUploadProps> = ({
   setSelectedXML,
   xmlUploadResponse,
   setXMLUploadResponse,
+  cadastroGeralData,
+  setCadastroGeralData,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -161,16 +170,24 @@ const ProductUpload: React.FC<ProductUploadProps> = ({
 
       if (data) {
         setMetadata(data);
-        toast.success("Formulário liberado: Inicie o preenchimento", {
-          autoClose: 2000,
-        });
+
+        const cadastroData = await getFromCadastroGeral();
+
+        if (cadastroData) {
+          setCadastroGeralData(cadastroData);
+        }
+
         if (productUploadResponse) {
           const updatedMetadata = updateMetadataFields(
             data,
-            productUploadResponse
+            productUploadResponse,
+            selectedFormID
           );
           setMetadata(updatedMetadata);
         }
+        toast.success("Formulário liberado: Inicie o preenchimento", {
+          autoClose: 2000,
+        });
         setDisabledItems([false, false]);
         setSelectedItem("Editar Metadados");
       }
@@ -350,7 +367,8 @@ const ProductUpload: React.FC<ProductUploadProps> = ({
           )}
 
           {isLoadedProduct && !selectedXML.isLoadedProduct && (
-            <Box sx={{ mt: 6, width: 600, mb: 6 }}>
+            <Box sx={{ mt: 4, width: 600, mb: 6 }}>
+              <Divider sx={{ mb: 2 }}>ou</Divider>
               <Typography
                 style={{ marginBottom: 5, marginLeft: 5, fontFamily: "Nunito" }}
               >

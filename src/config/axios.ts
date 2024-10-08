@@ -77,3 +77,28 @@ export const getFormType = async (
     return null; // Return null in case of error
   }
 };
+
+export const getFromCadastroGeral = async (): Promise<APIResponse[]> => {
+  const urls: string[] = [
+    "http://localhost:8000/cadastro_geral/MD_DataIdentification-extent-verticalExtent-verticalDatum",
+    "http://localhost:8000/cadastro_geral/MD_Identification-citation-collectiveTitle",
+    "http://localhost:8000/cadastro_geral/MD_Metadata-contact-individualName",
+    "http://localhost:8000/cadastro_geral/MD_Metadata-contact-organisationName",
+  ];
+
+  try {
+    // Making parallel GET requests, using the generic APIResponse with type T for axios response
+    const requests: Promise<AxiosResponse<APIResponse>>[] = urls.map((url) =>
+      axios.get<APIResponse>(url)
+    );
+
+    // Wait for all the requests to resolve
+    const responses = await Promise.all(requests);
+
+    // Return only the data from the responses
+    return responses.map((response) => response.data);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error; // Rethrow the error to be handled by the caller
+  }
+};

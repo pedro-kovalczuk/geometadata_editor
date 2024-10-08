@@ -20,4 +20,45 @@ interface UploadResponse {
   product_types: ProductType[];
 }
 
-export type { APIResponse, Error, ProductType, UploadResponse };
+interface CadastroGeralDatum {
+  [key: string]: {
+    "MD_DataIdentification-extent-verticalExtent-verticalDatum": string;
+  };
+}
+
+interface CadastroGeralProjects {
+  [key: string]: {
+    "MD_Identification-citation-collectiveTitle": string;
+  };
+}
+
+interface IndividualContactInfo {
+  "MD_Metadata-contact-individualName": string;
+  "MD_Metadata-contact-positionName": string;
+  "MD_Metadata-contact-organisationName": string;
+  "MD_Metadata-contact-contactInfo-onlineResource-linkage": string;
+  "MD_Metadata-contact-role": string;
+}
+
+type CadastroGeralIndividual = IndividualContactInfo[];
+
+interface OrganisationContactInfo {
+  "MD_Metadata-contact-organisationName": string;
+  "MD_Metadata-contact-contactInfo-onlineResource-linkage": string;
+  "MD_Metadata-contact-role": string;
+}
+
+interface CadastroGeralOrganisation {
+  [key: string]: OrganisationContactInfo;
+}
+
+export type {
+  APIResponse,
+  CadastroGeralDatum,
+  CadastroGeralIndividual,
+  CadastroGeralOrganisation,
+  CadastroGeralProjects,
+  Error,
+  ProductType,
+  UploadResponse,
+};

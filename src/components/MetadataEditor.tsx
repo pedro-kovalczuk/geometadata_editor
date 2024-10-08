@@ -5,13 +5,12 @@ import {
   Grid,
   InputLabel,
   MenuItem,
-  Paper,
   Select,
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
-import metadataGroups from "../assets/metadata_section_divider.json";
+import React, { useEffect } from "react";
+import divider from "../assets/section_divider.json"; // Importing the divider
 import { MetadataField, MetadataTypeForm } from "../types/appTypes";
 
 interface MetametadataComponentProps {
@@ -23,6 +22,70 @@ const MetadataEditor: React.FC<MetametadataComponentProps> = ({
   metadata,
   setMetadata,
 }) => {
+  const generateTituloValue = () => {
+    const alternateTitle1 =
+      metadata?.metadata_fields.find(
+        (field) =>
+          field.iso_xml_path === "MD_Identification-citation-alternateTitle1"
+      )?.default_value || "";
+
+    const alternateTitle2 =
+      metadata?.metadata_fields.find(
+        (field) =>
+          field.iso_xml_path === "MD_Identification-citation-alternateTitle2"
+      )?.default_value || "";
+
+    const scaleDenominator =
+      metadata?.metadata_fields.find(
+        (field) =>
+          field.iso_xml_path ===
+          "MD_DataIdentification-spatialResolution-equivalentScale-denominator1"
+      )?.default_value || "";
+
+    return `${alternateTitle1} - ${alternateTitle2} - ${scaleDenominator}`.trim();
+  };
+
+  // Update the Título field when the relevant fields change
+  const currentTituloField = metadata?.metadata_fields.find(
+    (field) => field.iso_xml_path === "MD_Identification-citation-title"
+  );
+
+  const sectionTitles: { [key: number]: string } = {
+    1: "Metametadados",
+    2: "Identificação do Produto",
+    3: "Características técnicas",
+    4: "Qualidade",
+  };
+
+  useEffect(() => {
+    if (metadata && currentTituloField) {
+      const newTituloValue = generateTituloValue();
+      // Only update if the new value is different from the current value
+      if (newTituloValue !== currentTituloField.default_value) {
+        const updatedFields = metadata.metadata_fields.map((field) =>
+          field.iso_xml_path === "MD_Identification-citation-title"
+            ? { ...field, default_value: newTituloValue }
+            : field
+        );
+        setMetadata({ ...metadata, metadata_fields: updatedFields });
+      }
+    }
+  }, [
+    metadata?.metadata_fields.find(
+      (field) =>
+        field.iso_xml_path === "MD_Identification-citation-alternateTitle1"
+    )?.default_value,
+    metadata?.metadata_fields.find(
+      (field) =>
+        field.iso_xml_path === "MD_Identification-citation-alternateTitle2"
+    )?.default_value,
+    metadata?.metadata_fields.find(
+      (field) =>
+        field.iso_xml_path ===
+        "MD_DataIdentification-spatialResolution-equivalentScale-denominator1"
+    )?.default_value,
+  ]);
+
   const handleFieldChange = (id: number, value: string) => {
     if (metadata) {
       const updatedFields = metadata.metadata_fields.map((field) =>
@@ -34,250 +97,139 @@ const MetadataEditor: React.FC<MetametadataComponentProps> = ({
 
   const getDropdownValue = (field: MetadataField): string => {
     const possibleValues = field.possible_values
-      .split(",")
+      ?.split(",")
       .map((option: string) => option.trim());
-    return possibleValues.includes(field.default_value.trim())
+    return possibleValues?.includes(field.default_value.trim())
       ? field.default_value.trim()
       : "";
   };
 
+  // Group fields by section and subsection, following the order from the divider
+  const groupedSections: {
+    [sectionId: string]: { [subsection: string]: MetadataField[] };
+  } = metadata
+    ? divider.reduce((acc: any, dividerItem) => {
+        const section = dividerItem.section;
+        const subsection = dividerItem.subsection || "noSubsection";
+
+        if (!acc[section]) acc[section] = {};
+        if (!acc[section][subsection]) {
+          acc[section][subsection] = [];
+        }
+
+        // Find the matching field in metadata
+        const field = metadata.metadata_fields.find(
+          (metadataField) => metadataField.iso_xml_path === dividerItem.name
+        );
+
+        // If a matching field is found, add it in the correct order
+        if (field) {
+          acc[section][subsection].push(field);
+        }
+
+        return acc;
+      }, {})
+    : {};
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      {metadataGroups.map((group) => (
-        <Box key={group.id} sx={{ mb: 4 }}>
-          <Divider
-            sx={{
-              borderWidth: 1,
-              borderColor: "green",
-              mb: 2,
-              mt: group.name === "Metametadados" ? 2 : 8,
-            }}
-          />
-          <Typography
-            variant="h5"
-            sx={{
-              mb: 4,
-              fontFamily: "Nunito",
-              color: "green",
-              fontWeight: "bold",
-            }}
-          >
-            {group.name}
-          </Typography>
-          <Grid container spacing={2}>
-            {metadata?.metadata_fields
-              .filter(
-                (field, index) =>
-                  group.values.includes(field.iso_xml_path) && index === 0
-              ) // Render only the first field
-              .map((field) => (
-                <Grid item xs={12} sm={4} key={field.id}>
-                  {field.possible_values ? (
-                    <FormControl
-                      fullWidth
-                      variant="outlined"
-                      disabled={field.is_static}
-                      sx={{
-                        backgroundColor: field.default_value
-                          ? "#e5e5e5"
-                          : "white", // Apply light grey background if value is not null
-                      }}
-                    >
-                      <InputLabel
-                        sx={{
-                          fontFamily: "Nunito",
-                          "&.Mui-focused": {
-                            color: "green",
-                          },
-                        }}
-                      >
-                        {field.label}
-                      </InputLabel>
-                      <Select
-                        value={getDropdownValue(field)}
-                        onChange={(e) =>
-                          handleFieldChange(field.id, e.target.value as string)
-                        }
-                        label={field.label}
-                        sx={{
-                          fontFamily: "Nunito",
-                          "& .MuiOutlinedInput-root": {
-                            "& fieldset": {
-                              borderColor: "grey",
-                            },
-                            "&:hover fieldset": {
-                              borderColor: "grey",
-                            },
-                            "&.Mui-focused fieldset": {
-                              borderColor: "green",
-                            },
-                          },
-                        }}
-                      >
-                        {field.possible_values
-                          .split(",")
-                          .map((option: string) => (
-                            <MenuItem key={option.trim()} value={option.trim()}>
-                              {option.trim()}
-                            </MenuItem>
-                          ))}
-                      </Select>
-                    </FormControl>
-                  ) : field.field_type === "string" ||
-                    field.field_type === "int" ||
-                    field.field_type === "float" ? (
-                    <TextField
-                      label={field.label}
-                      variant="outlined"
-                      fullWidth
-                      value={field.default_value}
-                      onChange={(e) =>
-                        handleFieldChange(field.id, e.target.value)
-                      }
-                      disabled={field.is_static}
-                      InputLabelProps={{
-                        sx: {
-                          fontFamily: "Nunito",
-                          "&.Mui-focused": {
-                            color: "green",
-                          },
-                        },
-                      }}
-                      sx={{
-                        backgroundColor: field.default_value
-                          ? "#e5e5e5"
-                          : "white", // Apply light grey background if value is not null
-                        fontFamily: "Nunito",
-                        "& .MuiOutlinedInput-root": {
-                          "& fieldset": {
-                            borderColor: "grey",
-                          },
-                          "&:hover fieldset": {
-                            borderColor: "grey",
-                          },
-                          "&.Mui-focused fieldset": {
-                            borderColor: "green",
-                          },
-                        },
-                      }}
-                    />
-                  ) : field.field_type === "date" ? (
-                    <TextField
-                      label={field.label}
-                      type="date"
-                      variant="outlined"
-                      fullWidth
-                      InputLabelProps={{
-                        shrink: true,
-                        sx: {
-                          fontFamily: "Nunito",
-                          "&.Mui-focused": {
-                            color: "green",
-                          },
-                        },
-                      }}
-                      value={field.default_value}
-                      onChange={(e) =>
-                        handleFieldChange(field.id, e.target.value)
-                      }
-                      disabled={field.is_static}
-                      sx={{
-                        backgroundColor: field.default_value
-                          ? "#e5e5e5"
-                          : "white", // Apply light grey background if value is not null
-                        fontFamily: "Nunito",
-                        "& .MuiOutlinedInput-root": {
-                          "& fieldset": {
-                            borderColor: "grey",
-                          },
-                          "&:hover fieldset": {
-                            borderColor: "grey",
-                          },
-                          "&.Mui-focused fieldset": {
-                            borderColor: "green",
-                          },
-                        },
-                      }}
-                    />
-                  ) : (
-                    <Typography variant="body2" color="error">
-                      Unsupported field type: {field.field_type}
-                    </Typography>
-                  )}
-                </Grid>
-              ))}
+      {Object.keys(groupedSections)
+        .filter((sectionId) =>
+          // Check if the section has any non-empty subsections
+          Object.values(groupedSections[sectionId]).some(
+            (fields: MetadataField[]) => fields.length > 0
+          )
+        )
+        .map((sectionId) => (
+          <Box key={sectionId} sx={{ mb: 4, mt: 6 }}>
+            <Divider
+              sx={{
+                backgroundColor: "rgb(47, 125, 49)", // Adjust this to the desired shade of green
+                height: "2px", // Increases the thickness
+                mb: 2,
+                mt: 4,
+              }}
+            />
+            <Typography
+              variant="h5"
+              sx={{
+                mb: 4,
+                color: "rgb(47, 125, 49)",
+                fontWeight: "bold",
+                fontFamily: "Nunito",
+              }}
+            >
+              {sectionTitles[Number(sectionId)]} {/* Section Title */}
+            </Typography>
 
-            {/* Insert Paper box with Contato after first field */}
-            {group.name === "Metametadados" && (
-              <Grid item xs={12}>
-                <Paper
-                  elevation={3}
+            {Object.keys(groupedSections[sectionId]).map((subsection) =>
+              subsection !== "noSubsection" ? (
+                <Box
+                  key={subsection}
                   sx={{
-                    backgroundColor: "#c8edc5",
-                    padding: 2,
-                    mt: 2,
                     mb: 3,
+                    mt: 3,
+                    p: 2,
+                    backgroundColor: "#daf2d8",
+                    borderRadius: "8px",
                   }}
                 >
                   <Typography
                     variant="h6"
-                    sx={{
-                      fontFamily: "Nunito",
-                      color: "green",
-                      mb: 2,
-                    }}
+                    sx={{ mb: 2, color: "rgb(47, 125, 49)" }}
                   >
-                    Contato
+                    {subsection}
                   </Typography>
                   <Grid container spacing={2}>
-                    {metadata?.metadata_fields
-                      .slice(1, 6) // Render fields 2 to 6 (index 1 to 5)
-                      .map((field) => (
+                    {groupedSections[sectionId][subsection].map(
+                      (field: MetadataField) => (
                         <Grid item xs={12} sm={4} key={field.id}>
-                          {field.possible_values ? (
+                          {field.field_type === "date" ? (
+                            <TextField
+                              label={field.label}
+                              variant="outlined"
+                              fullWidth
+                              type="date"
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              value={
+                                field.default_value !== ""
+                                  ? field.default_value
+                                  : new Date().toISOString().split("T")[0] // Set default to today's date
+                              }
+                              onChange={(e) =>
+                                handleFieldChange(field.id, e.target.value)
+                              }
+                              disabled={field.is_static}
+                              InputProps={{
+                                style: {
+                                  backgroundColor:
+                                    field.default_value !== ""
+                                      ? "#f1f1f1"
+                                      : "white", // Set to white background initially, #f1f1f1 when non-empty
+                                },
+                              }}
+                            />
+                          ) : field.possible_values ? (
                             <FormControl
                               fullWidth
                               variant="outlined"
                               disabled={field.is_static}
                               sx={{
-                                backgroundColor: field.default_value
-                                  ? "#e5e5e5"
-                                  : "white", // Apply light grey background if value is not null
+                                backgroundColor:
+                                  field.default_value !== ""
+                                    ? "#f1f1f1"
+                                    : "white",
                               }}
                             >
-                              <InputLabel
-                                sx={{
-                                  fontFamily: "Nunito",
-                                  "&.Mui-focused": {
-                                    color: "green",
-                                  },
-                                }}
-                              >
-                                {field.label}
-                              </InputLabel>
+                              <InputLabel>{field.label}</InputLabel>
                               <Select
                                 value={getDropdownValue(field)}
                                 onChange={(e) =>
-                                  handleFieldChange(
-                                    field.id,
-                                    e.target.value as string
-                                  )
+                                  handleFieldChange(field.id, e.target.value)
                                 }
                                 label={field.label}
-                                sx={{
-                                  fontFamily: "Nunito",
-                                  "& .MuiOutlinedInput-root": {
-                                    "& fieldset": {
-                                      borderColor: "grey",
-                                    },
-                                    "&:hover fieldset": {
-                                      borderColor: "grey",
-                                    },
-                                    "&.Mui-focused fieldset": {
-                                      borderColor: "green",
-                                    },
-                                  },
-                                }}
                               >
                                 {field.possible_values
                                   .split(",")
@@ -301,185 +253,109 @@ const MetadataEditor: React.FC<MetametadataComponentProps> = ({
                                 handleFieldChange(field.id, e.target.value)
                               }
                               disabled={field.is_static}
-                              InputLabelProps={{
-                                sx: {
-                                  fontFamily: "Nunito",
-                                  "&.Mui-focused": {
-                                    color: "green",
-                                  },
-                                },
-                              }}
                               sx={{
-                                backgroundColor: field.default_value
-                                  ? "#e5e5e5"
-                                  : "white", // Apply light grey background if value is not null
-                                fontFamily: "Nunito",
-                                "& .MuiOutlinedInput-root": {
-                                  "& fieldset": {
-                                    borderColor: "grey",
-                                  },
-                                  "&:hover fieldset": {
-                                    borderColor: "grey",
-                                  },
-                                  "&.Mui-focused fieldset": {
-                                    borderColor: "green",
-                                  },
-                                },
+                                backgroundColor:
+                                  field.default_value !== ""
+                                    ? "#f1f1f1"
+                                    : "white",
                               }}
                             />
                           )}
                         </Grid>
-                      ))}
+                      )
+                    )}
                   </Grid>
-                </Paper>
-              </Grid>
-            )}
-
-            {/* Render remaining fields after the Paper */}
-            {metadata?.metadata_fields
-              .filter(
-                (field, index) =>
-                  group.values.includes(field.iso_xml_path) && index > 5
-              ) // Render remaining fields after index 5
-              .map((field) => (
-                <Grid item xs={12} sm={4} key={field.id}>
-                  {field.possible_values ? (
-                    <FormControl
-                      fullWidth
-                      variant="outlined"
-                      disabled={field.is_static}
-                      sx={{
-                        backgroundColor: field.default_value
-                          ? "#e5e5e5"
-                          : "white", // Apply light grey background if value is not null
-                      }}
-                    >
-                      <InputLabel
-                        sx={{
-                          fontFamily: "Nunito",
-                          "&.Mui-focused": {
-                            color: "green",
-                          },
-                        }}
-                      >
-                        {field.label}
-                      </InputLabel>
-                      <Select
-                        value={getDropdownValue(field)}
-                        onChange={(e) =>
-                          handleFieldChange(field.id, e.target.value as string)
-                        }
-                        label={field.label}
-                        sx={{
-                          fontFamily: "Nunito",
-                          "& .MuiOutlinedInput-root": {
-                            "& fieldset": {
-                              borderColor: "grey",
-                            },
-                            "&:hover fieldset": {
-                              borderColor: "grey",
-                            },
-                            "&.Mui-focused fieldset": {
-                              borderColor: "green",
-                            },
-                          },
-                        }}
-                      >
-                        {field.possible_values
-                          .split(",")
-                          .map((option: string) => (
-                            <MenuItem key={option.trim()} value={option.trim()}>
-                              {option.trim()}
-                            </MenuItem>
-                          ))}
-                      </Select>
-                    </FormControl>
-                  ) : field.field_type === "string" ||
-                    field.field_type === "int" ||
-                    field.field_type === "float" ? (
-                    <TextField
-                      label={field.label}
-                      variant="outlined"
-                      fullWidth
-                      value={field.default_value}
-                      onChange={(e) =>
-                        handleFieldChange(field.id, e.target.value)
-                      }
-                      disabled={field.is_static}
-                      InputLabelProps={{
-                        sx: {
-                          fontFamily: "Nunito",
-                          "&.Mui-focused": {
-                            color: "green",
-                          },
-                        },
-                      }}
-                      sx={{
-                        backgroundColor: field.default_value
-                          ? "#e5e5e5"
-                          : "white", // Apply light grey background if value is not null
-                        fontFamily: "Nunito",
-                        "& .MuiOutlinedInput-root": {
-                          "& fieldset": {
-                            borderColor: "grey",
-                          },
-                          "&:hover fieldset": {
-                            borderColor: "grey",
-                          },
-                          "&.Mui-focused fieldset": {
-                            borderColor: "green",
-                          },
-                        },
-                      }}
-                    />
-                  ) : field.field_type === "date" ? (
-                    <TextField
-                      label={field.label}
-                      type="date"
-                      variant="outlined"
-                      fullWidth
-                      InputLabelProps={{
-                        shrink: true,
-                        sx: {
-                          fontFamily: "Nunito",
-                          "&.Mui-focused": {
-                            color: "green",
-                          },
-                        },
-                      }}
-                      value={field.default_value}
-                      onChange={(e) =>
-                        handleFieldChange(field.id, e.target.value)
-                      }
-                      disabled={field.is_static}
-                      sx={{
-                        backgroundColor: field.default_value
-                          ? "#e5e5e5"
-                          : "white", // Apply light grey background if value is not null
-                        fontFamily: "Nunito",
-                        "& .MuiOutlinedInput-root": {
-                          "& fieldset": {
-                            borderColor: "grey",
-                          },
-                          "&:hover fieldset": {
-                            borderColor: "grey",
-                          },
-                          "&.Mui-focused fieldset": {
-                            borderColor: "green",
-                          },
-                        },
-                      }}
-                    />
-                  ) : (
-                    <Typography variant="body2" color="error">
-                      Unsupported field type: {field.field_type}
-                    </Typography>
+                </Box>
+              ) : (
+                <Grid container spacing={2} key="noSubsection">
+                  {groupedSections[sectionId].noSubsection.map(
+                    (field: MetadataField) => (
+                      <Grid item xs={12} sm={4} key={field.id}>
+                        {field.field_type === "date" ? (
+                          <TextField
+                            label={field.label}
+                            variant="outlined"
+                            fullWidth
+                            type="date"
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                            value={
+                              field.default_value !== ""
+                                ? field.default_value
+                                : new Date().toISOString().split("T")[0] // Set default to today's date
+                            }
+                            onChange={(e) =>
+                              handleFieldChange(field.id, e.target.value)
+                            }
+                            disabled={field.is_static}
+                            InputProps={{
+                              style: {
+                                backgroundColor:
+                                  field.default_value !== ""
+                                    ? "#f1f1f1"
+                                    : "white", // Set to white background initially, #f1f1f1 when non-empty
+                              },
+                            }}
+                          />
+                        ) : field.possible_values ? (
+                          <FormControl
+                            fullWidth
+                            variant="outlined"
+                            disabled={field.is_static}
+                            sx={{
+                              backgroundColor:
+                                field.default_value !== ""
+                                  ? "#f1f1f1"
+                                  : "white",
+                            }}
+                          >
+                            <InputLabel>{field.label}</InputLabel>
+                            <Select
+                              value={getDropdownValue(field)}
+                              onChange={(e) =>
+                                handleFieldChange(field.id, e.target.value)
+                              }
+                              label={field.label}
+                            >
+                              {field.possible_values
+                                .split(",")
+                                .map((option: string) => (
+                                  <MenuItem
+                                    key={option.trim()}
+                                    value={option.trim()}
+                                  >
+                                    {option.trim()}
+                                  </MenuItem>
+                                ))}
+                            </Select>
+                          </FormControl>
+                        ) : (
+                          <TextField
+                            label={field.label}
+                            variant="outlined"
+                            fullWidth
+                            value={field.default_value}
+                            onChange={(e) =>
+                              handleFieldChange(field.id, e.target.value)
+                            }
+                            disabled={field.is_static}
+                            sx={{
+                              backgroundColor:
+                                field.default_value !== ""
+                                  ? "#f1f1f1"
+                                  : "white",
+                            }}
+                          />
+                        )}
+                      </Grid>
+                    )
                   )}
                 </Grid>
-              ))}
-          </Grid>
-        </Box>
-      ))}
+              )
+            )}
+          </Box>
+        ))}
     </Box>
   );
 };
