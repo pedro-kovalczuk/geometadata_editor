@@ -52,6 +52,16 @@ interface CadastroGeralOrganisation {
   [key: string]: OrganisationContactInfo;
 }
 
+interface SubmissionMetadataField {
+  iso_xml_path: string;
+  value: string;
+}
+
+interface SubmissionMetadata {
+  metadata_fields: SubmissionMetadataField[];
+  product_type: number;
+}
+
 export type {
   APIResponse,
   CadastroGeralDatum,
@@ -60,5 +70,7 @@ export type {
   CadastroGeralProjects,
   Error,
   ProductType,
+  SubmissionMetadata,
+  SubmissionMetadataField,
   UploadResponse,
 };

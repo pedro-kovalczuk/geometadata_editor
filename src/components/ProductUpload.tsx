@@ -1,5 +1,5 @@
 import AddIcon from "@mui/icons-material/Add";
-import { Divider, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -240,7 +240,11 @@ const ProductUpload: React.FC<ProductUploadProps> = ({
         return;
       }
 
-      const response = await postXMLData(selectedXML.selectedFile, fileId);
+      const response = await postXMLData(
+        selectedXML.selectedFile,
+        fileId,
+        selectedFormID
+      );
       setXMLUploadResponse(response);
 
       setOpenModal(true);
@@ -248,14 +252,14 @@ const ProductUpload: React.FC<ProductUploadProps> = ({
       if (axios.isAxiosError(error)) {
         if (error.code === "ERR_NETWORK") {
           toast.error("Falha na conexão: Erro ao conectar com o servidor.", {
-            autoClose: 4000,
+            autoClose: 2000,
           });
         } else {
           toast.error("Este arquivo não é válido", { autoClose: 1000 });
         }
       } else {
         toast.error("Ocorreu um erro inesperado. Por favor, tente novamente.", {
-          autoClose: 4000,
+          autoClose: 2000,
         });
       }
     } finally {
@@ -312,8 +316,56 @@ const ProductUpload: React.FC<ProductUploadProps> = ({
             />
           )}
 
-          {isLoadedProduct && (
-            <Box sx={{ mt: 4, width: 600, mb: 3 }}>
+          {isLoadedProduct && !selectedXML.isLoadedProduct && (
+            <Box sx={{ mt: 6, width: 600, mb: 6 }}>
+              <Typography
+                style={{ marginBottom: 5, marginLeft: 5, fontFamily: "Nunito" }}
+              >
+                Selecione o tipo de formulário para o produto carregado acima
+              </Typography>
+
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Select
+                  value={selectedFormID}
+                  onChange={(event) =>
+                    setSelectedFormID(event.target.value as number)
+                  }
+                  displayEmpty
+                  fullWidth
+                  sx={{ fontFamily: "Nunito", flex: 1 }}
+                  disabled={loading}
+                >
+                  <MenuItem value="" disabled>
+                    Tipos disponíveis
+                  </MenuItem>
+                  {availableFormTypes &&
+                    availableFormTypes.map((item) => (
+                      <MenuItem key={item.id} value={item.id}>
+                        {item.name}
+                      </MenuItem>
+                    ))}
+                </Select>
+
+                <Button
+                  sx={{
+                    marginLeft: 2,
+                    fontWeight: "bold",
+                    fontFamily: "Nunito",
+                    whiteSpace: "nowrap",
+                  }}
+                  variant="contained"
+                  color="success"
+                  onClick={() => handleGetFormType(selectedFormID)}
+                  disabled={selectedFormID === "" || loading} // Enable when a product is selected
+                >
+                  Gerar Formulário
+                </Button>
+              </Box>
+            </Box>
+          )}
+
+          {isLoadedProduct && selectedFormID && (
+            <Box sx={{ mt: 3, width: 600, mb: 3 }}>
               <input
                 type="file"
                 accept="*"
@@ -365,58 +417,13 @@ const ProductUpload: React.FC<ProductUploadProps> = ({
               }}
             />
           )}
-
-          {isLoadedProduct && !selectedXML.isLoadedProduct && (
-            <Box sx={{ mt: 4, width: 600, mb: 6 }}>
-              <Divider sx={{ mb: 2 }}>ou</Divider>
-              <Typography
-                style={{ marginBottom: 5, marginLeft: 5, fontFamily: "Nunito" }}
-              >
-                Selecione o tipo de formulário para o produto carregado acima
-              </Typography>
-
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Select
-                  value={selectedFormID}
-                  onChange={(event) =>
-                    setSelectedFormID(event.target.value as number)
-                  }
-                  displayEmpty
-                  fullWidth
-                  sx={{ fontFamily: "Nunito", flex: 1 }}
-                  disabled={loading}
-                >
-                  <MenuItem value="" disabled>
-                    Tipos disponíveis
-                  </MenuItem>
-                  {availableFormTypes &&
-                    availableFormTypes.map((item) => (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.name}
-                      </MenuItem>
-                    ))}
-                </Select>
-
-                <Button
-                  sx={{
-                    marginLeft: 2,
-                    fontWeight: "bold",
-                    fontFamily: "Nunito",
-                    whiteSpace: "nowrap",
-                  }}
-                  variant="contained"
-                  color="success"
-                  onClick={() => handleGetFormType(selectedFormID)}
-                  disabled={selectedFormID === "" || loading} // Enable when a product is selected
-                >
-                  Gerar Formulário
-                </Button>
-              </Box>
-            </Box>
-          )}
         </>
       )}
-      <ErrorModal open={openModal} handleClose={() => setOpenModal(false)} />
+      <ErrorModal
+        open={openModal}
+        handleClose={() => setOpenModal(false)}
+        xmlUploadResponse={xmlUploadResponse}
+      />
     </Box>
   );
 };

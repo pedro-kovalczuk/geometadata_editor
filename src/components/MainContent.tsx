@@ -38,7 +38,7 @@ const MainContent: React.FC<MainContentProps> = ({
     useState<APIResponse | null>(null);
   const [cadastroGeralData, setCadastroGeralData] = useState<APIResponse[]>([]);
 
-  console.log(metadata);
+  console.log(xmlUploadResponse);
 
   return (
     <Box sx={{ flexGrow: 1, p: 10, mt: 4, ml: -3, pl: 40 }}>
@@ -86,7 +86,12 @@ const MainContent: React.FC<MainContentProps> = ({
         />
       )}
       {selectedItem === "Editar Metadados" && (
-        <MetadataEditor metadata={metadata} setMetadata={setMetadata} />
+        <MetadataEditor
+          metadata={metadata}
+          setMetadata={setMetadata}
+          selectedFormID={selectedFormID}
+          productUploadResponse={productUploadResponse}
+        />
       )}
     </Box>
   );

@@ -8,7 +8,7 @@ const FileDetails: React.FC<{
   fileName: string;
   fileSize: string;
   onSubmit: () => void;
-  uploadResponse: UploadResponse | APIResponse | null;
+  uploadResponse: UploadResponse | APIResponse | null | string[];
   onDelete: () => void;
   statusMessage: string;
 }> = ({

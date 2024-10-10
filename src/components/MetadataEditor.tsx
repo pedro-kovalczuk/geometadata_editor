@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Divider,
   FormControl,
   Grid,
@@ -9,19 +10,41 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import divider from "../assets/section_divider.json"; // Importing the divider
+import { postFormData } from "../config/axios";
+import {
+  APIResponse,
+  SubmissionMetadataField,
+  UploadResponse,
+} from "../types/apiTypes";
 import { MetadataField, MetadataTypeForm } from "../types/appTypes";
+import { transformMetadataTypeForm } from "../utils/transformMetadataTypeForm";
+import XmlModal from "./XMLModal";
 
 interface MetametadataComponentProps {
   metadata: MetadataTypeForm | null;
   setMetadata: (metadata: MetadataTypeForm | null) => void;
+  selectedFormID: number | "";
+  productUploadResponse: UploadResponse | null;
 }
 
 const MetadataEditor: React.FC<MetametadataComponentProps> = ({
   metadata,
   setMetadata,
+  selectedFormID,
+  productUploadResponse,
 }) => {
+  const [transformedMetadata, setTransformedMetadata] = useState<
+    SubmissionMetadataField[] | null
+  >(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [submissionResponse, setSubmissionResponse] =
+    useState<APIResponse | null>(null);
+  const [isModalOpen, setModalOpen] = useState(false);
+
   const generateTituloValue = () => {
     const alternateTitle1 =
       metadata?.metadata_fields.find(
@@ -49,6 +72,54 @@ const MetadataEditor: React.FC<MetametadataComponentProps> = ({
   const currentTituloField = metadata?.metadata_fields.find(
     (field) => field.iso_xml_path === "MD_Identification-citation-title"
   );
+
+  const handleSubmitForm = async () => {
+    try {
+      setLoading(true);
+      if (metadata && productUploadResponse?.file_id) {
+        const transformedMetadataVar = transformMetadataTypeForm(metadata);
+        setTransformedMetadata(transformedMetadataVar);
+        console.log(transformedMetadataVar);
+        console.log(productUploadResponse.file_id);
+        console.log(selectedFormID);
+
+        const response = await postFormData(
+          productUploadResponse?.file_id,
+          transformedMetadataVar,
+          selectedFormID
+        );
+
+        console.log(response);
+
+        if (response) {
+          setSubmissionResponse(response);
+          setModalOpen(true);
+        }
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.code === "ERR_NETWORK") {
+          toast.error("Falha na conexão: Erro ao conectar com o servidor.", {
+            autoClose: 2000,
+          });
+        } else {
+          toast.error("Reveja o formulário e tente novamente", {
+            autoClose: 2000,
+          });
+        }
+      } else {
+        toast.error("Ocorreu um erro inesperado. Por favor, tente novamente.", {
+          autoClose: 2000,
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
 
   const sectionTitles: { [key: number]: string } = {
     1: "Metametadados",
@@ -196,7 +267,7 @@ const MetadataEditor: React.FC<MetametadataComponentProps> = ({
                               value={
                                 field.default_value !== ""
                                   ? field.default_value
-                                  : new Date().toISOString().split("T")[0] // Set default to today's date
+                                  : new Date().toISOString().split("T")[0] // Set default to today's
                               }
                               onChange={(e) =>
                                 handleFieldChange(field.id, e.target.value)
@@ -283,7 +354,7 @@ const MetadataEditor: React.FC<MetametadataComponentProps> = ({
                             value={
                               field.default_value !== ""
                                 ? field.default_value
-                                : new Date().toISOString().split("T")[0] // Set default to today's date
+                                : new Date().toISOString().split("T")[0] // Set default to today's
                             }
                             onChange={(e) =>
                               handleFieldChange(field.id, e.target.value)
@@ -356,6 +427,40 @@ const MetadataEditor: React.FC<MetametadataComponentProps> = ({
             )}
           </Box>
         ))}
+      <Divider
+        sx={{
+          backgroundColor: "rgb(47, 125, 49)", // Adjust this to the desired shade of green
+          height: "2px", // Increases the thickness
+          mb: 2,
+          mt: 4,
+        }}
+      />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%", // Ensures the flex container takes the full width
+          marginTop: 4,
+          marginBottom: 5,
+        }}
+      >
+        <Button
+          variant="contained"
+          color="success"
+          sx={{ marginRight: 2, fontFamily: "Nunito", fontWeight: "bold" }}
+          onClick={handleSubmitForm}
+        >
+          Enviar Metadados
+        </Button>
+      </Box>
+      {submissionResponse && (
+        <XmlModal
+          open={isModalOpen}
+          onClose={handleCloseModal}
+          response={submissionResponse}
+        />
+      )}
     </Box>
   );
 };

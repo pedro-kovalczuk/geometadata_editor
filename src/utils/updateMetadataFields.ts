@@ -13,6 +13,18 @@ export const updateMetadataFields = (
       field.iso_xml_path
     ];
 
+    if (field.field_type === "date") {
+      const today = new Date();
+      const formattedDate = `${String(today.getDate()).padStart(
+        2,
+        "0"
+      )}/${String(today.getMonth() + 1).padStart(
+        2,
+        "0"
+      )}/${today.getFullYear()}`;
+      return { ...field, default_value: formattedDate };
+    }
+
     // Check if jsonValue is not null or undefined before calling toString()
     if (jsonValue !== undefined && jsonValue !== null) {
       return { ...field, default_value: jsonValue.toString().trim() };

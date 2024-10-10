@@ -1,5 +1,9 @@
 import axios, { AxiosResponse } from "axios";
-import { APIResponse, UploadResponse } from "../types/apiTypes"; // Import the UploadResponse type
+import {
+  APIResponse,
+  SubmissionMetadataField,
+  UploadResponse,
+} from "../types/apiTypes"; // Import the UploadResponse type
 import { MetadataTypeForm } from "../types/appTypes";
 
 export const postGeoproduct = async (
@@ -31,19 +35,29 @@ export const postGeoproduct = async (
 
 export const postXMLData = async (
   xmlFile: File | null,
-  geoproductID: number | null
+  geoproductID: number | null,
+  formTypeID: number | ""
 ): Promise<APIResponse> => {
-  const formData = new FormData();
-  if (xmlFile) {
-    formData.append("xml_metadata_file", xmlFile); // Append the file object
+  if (!xmlFile) {
+    throw new Error("No file provided for upload.");
   }
+  if (!geoproductID) {
+    throw new Error("No geoproduct ID provided.");
+  }
+
+  const formData = new FormData();
+  formData.append("metadata_file", xmlFile);
+
+  // Convert formTypeID to a string to avoid any type issues
+  formData.append("product_type", formTypeID.toString());
+
   try {
     const response: AxiosResponse<APIResponse> = await axios.post(
       `http://localhost:8000/geoproduct/${geoproductID}/send_xml_metadata/`,
       formData,
       {
         headers: {
-          "Content-Type": "multipart/form-data", // Axios sets this automatically, but you can specify it as well
+          "Content-Type": "multipart/form-data",
         },
       }
     );
@@ -56,7 +70,44 @@ export const postXMLData = async (
     };
   } catch (error) {
     console.error("Error uploading file:", error);
-    throw error; // Throw the error to be caught in the calling function
+    throw error;
+  }
+};
+
+export const postFormData = async (
+  geoproductID: number | null,
+  metadataForSubmission: SubmissionMetadataField[],
+  formTypeID: number | ""
+): Promise<APIResponse> => {
+  if (!geoproductID) {
+    throw new Error("Invalid geoproduct ID");
+  }
+
+  const payload = {
+    metadata_fields: metadataForSubmission,
+    product_type: formTypeID,
+  };
+
+  try {
+    const response: AxiosResponse<APIResponse> = await axios.post(
+      `http://localhost:8000/geoproduct/${geoproductID}/build_metadata/`,
+      payload, // Sending the payload directly as a JSON object
+      {
+        headers: {
+          "Content-Type": "application/json", // Set the content type to JSON
+        },
+      }
+    );
+
+    console.log("Form submission success:", response.data);
+    return {
+      status: response.status,
+      statusText: response.statusText,
+      data: response.data,
+    };
+  } catch (error) {
+    console.error("Error submitting the form", error);
+    throw error; // Re-throw the error to be caught by the calling function
   }
 };
 

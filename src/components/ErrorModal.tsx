@@ -1,21 +1,20 @@
 import { Box, Button, Modal, Typography } from "@mui/material";
 import React from "react";
-
-// Exemplo de dados que precisam ser corrigidos
-const camposErrados = {
-  "MD_DataIdentification-spatialRepresentationType": "Matricial",
-  "MD_ReferenceSystem-referenceSystemIdentifier-code": 5531,
-  "MD_DataIdentification-spatialResolution-equivalentScale-denominator1": 10000,
-  "MD_DataIdentification-spatialResolution-equivalentScale-denominator2": 10000,
-  "MD_Identification-citation-alternateTitle": "1863-4-SO-C",
-};
+import { APIResponse } from "../types/apiTypes";
 
 interface ErrorModalProps {
   open: boolean;
   handleClose: () => void;
+  xmlUploadResponse: APIResponse | null;
 }
 
-const ErrorModal: React.FC<ErrorModalProps> = ({ open, handleClose }) => {
+const ErrorModal: React.FC<ErrorModalProps> = ({
+  open,
+  handleClose,
+  xmlUploadResponse,
+}) => {
+  const missingFields = xmlUploadResponse?.data.missing_fields || [];
+
   return (
     <Modal open={open} onClose={handleClose}>
       <Box
@@ -24,24 +23,49 @@ const ErrorModal: React.FC<ErrorModalProps> = ({ open, handleClose }) => {
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: 400,
+          width: 800,
           bgcolor: "background.paper",
           boxShadow: 24,
           p: 4,
           borderRadius: 2,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
         <Typography variant="h6" sx={{ mb: 2 }}>
-          Campos a serem corrigidos:
+          XML diagnosticado com sucesso
         </Typography>
-        <Box sx={{ mb: 2 }}>
-          {Object.entries(camposErrados).map(([campo, valor]) => (
-            <Typography key={campo} sx={{ mb: 1 }}>
-              <strong>{campo}:</strong> {valor}
+        {missingFields.length > 0 && (
+          <Box sx={{ mb: 2, width: "100%" }}>
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              Campos faltantes:
             </Typography>
-          ))}
-        </Box>
-        <Button variant="contained" color="success" onClick={handleClose}>
+            <Box
+              sx={{
+                maxHeight: missingFields.length > 6 ? 200 : "auto", // Set height if more than 6 fields
+                overflowY: missingFields.length > 6 ? "auto" : "visible",
+                border: "1px solid #ddd",
+                borderRadius: 1,
+                p: 1,
+              }}
+            >
+              <ol>
+                {missingFields.map((field: string, index: number) => (
+                  <li key={index}>
+                    <Typography>{field}</Typography>
+                  </li>
+                ))}
+              </ol>
+            </Box>
+          </Box>
+        )}
+        <Button
+          variant="contained"
+          color="success"
+          onClick={handleClose}
+          sx={{ mt: 2 }}
+        >
           Fechar
         </Button>
       </Box>
