@@ -6,6 +6,13 @@ import {
 } from "../types/apiTypes"; // Import the UploadResponse type
 import { MetadataTypeForm } from "../types/appTypes";
 
+let apiUrl = import.meta.env.VITE_GMD_CREATOR_URL;
+if (!apiUrl) {
+  apiUrl = "http://localhost:8000";
+}
+console.log(apiUrl);
+
+
 export const postGeoproduct = async (
   file: File | null
 ): Promise<UploadResponse> => {
@@ -16,7 +23,7 @@ export const postGeoproduct = async (
 
   try {
     const response: AxiosResponse<UploadResponse> = await axios.post(
-      "http://localhost:8000/geoproduct/",
+      `${apiUrl}/geoproduct/`,
       formData,
       {
         headers: {
@@ -53,7 +60,7 @@ export const postXMLData = async (
 
   try {
     const response: AxiosResponse<APIResponse> = await axios.post(
-      `http://localhost:8000/geoproduct/${geoproductID}/send_xml_metadata/`,
+      `${apiUrl}/geoproduct/${geoproductID}/send_xml_metadata/`,
       formData,
       {
         headers: {
@@ -90,7 +97,7 @@ export const postFormData = async (
 
   try {
     const response: AxiosResponse<APIResponse> = await axios.post(
-      `http://localhost:8000/geoproduct/${geoproductID}/build_metadata/`,
+      `${apiUrl}/geoproduct/${geoproductID}/build_metadata/`,
       payload, // Sending the payload directly as a JSON object
       {
         headers: {
@@ -120,7 +127,7 @@ export const getFormType = async (
 
   try {
     const response: AxiosResponse<MetadataTypeForm> = await axios.get(
-      `http://localhost:8000/product_types/${id}/`
+      `${apiUrl}/product_types/${id}/`
     );
     return response.data; // Return the form data
   } catch (error) {
@@ -131,10 +138,10 @@ export const getFormType = async (
 
 export const getFromCadastroGeral = async (): Promise<APIResponse[]> => {
   const urls: string[] = [
-    "http://localhost:8000/cadastro_geral/MD_DataIdentification-extent-verticalExtent-verticalDatum",
-    "http://localhost:8000/cadastro_geral/MD_Identification-citation-collectiveTitle",
-    "http://localhost:8000/cadastro_geral/MD_Metadata-contact-individualName",
-    "http://localhost:8000/cadastro_geral/MD_Metadata-contact-organisationName",
+    `${apiUrl}/cadastro_geral/MD_DataIdentification-extent-verticalExtent-verticalDatum`,
+    `${apiUrl}/cadastro_geral/MD_Identification-citation-collectiveTitle`,
+    `${apiUrl}/cadastro_geral/MD_Metadata-contact-individualName`,
+    `${apiUrl}/cadastro_geral/MD_Metadata-contact-organisationName`,
   ];
 
   try {
